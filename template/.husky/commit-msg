@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📋 Validando mensaje de commit (Conventional Commits)..."
+
+npx --no -- commitlint --edit "$1"
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ El mensaje de commit no sigue Conventional Commits."
+  echo ""
+  echo "Formato: <tipo>(<alcance>): <descripción>"
+  echo ""
+  echo "Tipos válidos:"
+  echo "  feat:     nueva funcionalidad"
+  echo "  fix:      corrección de bug"
+  echo "  security: mejora o corrección de seguridad"
+  echo "  docs:     cambios en documentación"
+  echo "  chore:    tareas de mantenimiento"
+  echo "  refactor: refactorización sin cambio funcional"
+  echo "  test:     añadir o modificar tests"
+  echo "  perf:     mejora de rendimiento"
+  echo ""
+  echo "Ejemplo: feat(auth): añadir login con JWT"
+  exit 1
+fi

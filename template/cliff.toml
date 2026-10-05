@@ -1,0 +1,58 @@
+# cliff.toml — Configuración de git-cliff
+# Genera CHANGELOG.md desde Conventional Commits
+# Uso: git-cliff --tag vX.Y.Z -o CHANGELOG.md
+
+[changelog]
+header = """
+# Changelog
+
+Todos los cambios notables de este proyecto se documentan en este archivo.
+
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
+y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+"""
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group | striptags | trim | upper_first }}
+    {% for commit in commits %}
+        - {% if commit.scope %}**{{ commit.scope }}:** {% endif %}\
+            {{ commit.message | upper_first }}\
+            {% if commit.github.pr_number %} ([#{{ commit.github.pr_number }}]({{ commit.github.pr_url }})){% endif %}\
+    {% endfor %}
+{% endfor %}\n
+"""
+footer = """
+<!-- Generado por git-cliff -->
+"""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+commit_parsers = [
+    { message = "^feat", group = "Added" },
+    { message = "^fix", group = "Fixed" },
+    { message = "^security", group = "Security" },
+    { message = "^perf", group = "Changed" },
+    { message = "^refactor", group = "Changed" },
+    { message = "^docs", group = "Documentation" },
+    { message = "^chore", group = "Maintenance" },
+    { message = "^test", group = "Testing" },
+    { message = "^deprecated", group = "Deprecated" },
+    { message = "^remove", group = "Removed" },
+    { body = ".*security", group = "Security" },
+]
+protect_breaking_commits = false
+filter_commits = false
+tag_pattern = "v[0-9]*"
+skip_tags = "v0.1.0-beta.1"
+ignore_tags = ""
+topo_order = false
+sort_commits = "oldest"

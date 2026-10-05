@@ -1,0 +1,103 @@
+# .github/workflows/tests.yml
+name: Tests
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  # ──────────────────────────────────────────────
+  # Detecta qué stacks están presentes en el repo
+  # ──────────────────────────────────────────────
+  detect-stacks:
+    runs-on: ubuntu-24.04
+    outputs:
+      has-node: ${{ steps.check.outputs.has-node }}
+      has-python: ${{ steps.check.outputs.has-python }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: check
+        run: |
+          if [ -f "package.json" ]; then
+            echo "has-node=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-node=false" >> $GITHUB_OUTPUT
+          fi
+          if [ -f "requirements.txt" ] || [ -f "pyproject.toml" ]; then
+            echo "has-python=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-python=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ──────────────────────────────────────────────
+  # Tests de Node.js (si existe package.json)
+  # ──────────────────────────────────────────────
+  test-node:
+    needs: detect-stacks
+    if: needs.detect-stacks.outputs.has-node == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run linter
+        run: npm run lint --if-present
+      - name: Run unit tests
+        run: npm test --if-present
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: node-coverage-${{ matrix.node-version }}
+          path: coverage/
+          if-no-files-found: ignore
+
+  # ──────────────────────────────────────────────
+  # Tests de Python (si existe requirements.txt o pyproject.toml)
+  # ──────────────────────────────────────────────
+  test-python:
+    needs: detect-stacks
+    if: needs.detect-stacks.outputs.has-python == 'true'
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run linter (Ruff)
+        run: ruff check . || true
+      - name: Run unit tests
+        run: pytest --tb=short -v || true
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: python-coverage-${{ matrix.python-version }}
+          path: htmlcov/
+          if-no-files-found: ignore

@@ -1,0 +1,46 @@
+# codecov.yml
+# Configuración de Codecov para bloquear PRs con cobertura insuficiente.
+
+codecov:
+  require_ci_to_pass: true
+  notify:
+    wait_for_ci: true
+
+coverage:
+  precision: 2
+  round: down
+  range: "70...100"  # Rango de colores: 70% amarillo, 100% verde
+
+  status:
+    # Cobertura global del proyecto (no debe bajar)
+    project:
+      default:
+        target: auto          # Usa la cobertura actual como base
+        threshold: 1%         # Permite caída de 1% sin bloquear
+        base: auto
+        informational: false  # ⚠️ Bloquea el PR si falla
+
+    # Cobertura del código nuevo (patch)
+    patch:
+      default:
+        target: 50%           # El código nuevo debe tener al menos 50% cobertura
+        threshold: 0%
+        base: auto
+        informational: false  # ⚠️ Bloquea el PR si falla
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: true
+  require_base: false
+  require_head: true
+
+flags:
+  node:
+    paths:
+      - src/
+    carryforward: true
+  python:
+    paths:
+      - src/
+    carryforward: true

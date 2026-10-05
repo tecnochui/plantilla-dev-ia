@@ -1,0 +1,19 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Temporales
+*.tmp
+*.bak
+
+# Logs
+*.log
+
+# NO ignorar template/ ni docs/
+# Los archivos dentro de template/ tienen su propio .gitignore

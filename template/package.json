@@ -1,0 +1,47 @@
+{
+    "name": "tu-proyecto",
+    "version": "1.0.0",
+    "description": "Descripción del proyecto",
+    "private": true,
+    "scripts": {
+        "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+        "lint:security": "eslint . --ext .js,.ts,.jsx,.tsx --config .eslintrc-security.js",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:coverage": "vitest run --coverage",
+        "sast": "semgrep --config=p/owasp-top-ten --config=p/security-audit --error .",
+        "sca": "trivy fs --severity CRITICAL,HIGH --exit-code 1 .",
+        "secrets": "gitleaks detect --source . --verbose",
+        "audit": "npm audit --audit-level=high",
+        "commitlint": "commitlint --from HEAD~1 --to HEAD --verbose",
+        "security:all": "npm run sast && npm run sca && npm run secrets && npm run audit",
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^20.3.1",
+        "@commitlint/config-conventional": "^20.3.1",
+        "@eslint/js": "^9.20.0",
+        "eslint": "^10.2.1",
+        "eslint-plugin-security": "^4.0.1",
+        "eslint-plugin-no-unsanitized": "^4.1.4",
+        "globals": "^16.0.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^16.1.2",
+        "prettier": "^3.9.6",
+        "typescript": "^5.7.0",
+        "typescript-eslint": "^8.24.0",
+        "vitest": "^4.1.5",
+        "@vitest/coverage-v8": "^4.1.5"
+    },
+    "lint-staged": {
+        "*.{js,ts,jsx,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md,yml,yaml}": [
+            "prettier --write"
+        ]
+    }
+}

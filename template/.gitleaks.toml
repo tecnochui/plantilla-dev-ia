@@ -1,0 +1,164 @@
+# .gitleaks.toml
+# Configuración de Gitleaks para detectar secretos en el repo.
+# Extiende el ruleset por defecto y añade reglas para API keys de IA.
+# Uso: gitleaks detect --source . --verbose
+
+title = "Gitleaks config — Proyectos IA + Web"
+
+# ──────────────────────────────────────────────
+# Extender el ruleset por defecto de Gitleaks
+# (AWS, GitHub, Stripe, Slack, etc. ya vienen incluidos)
+# ──────────────────────────────────────────────
+[extend]
+useDefault = true
+
+# ──────────────────────────────────────────────
+# Allowlist global — evitar falsos positivos
+# ──────────────────────────────────────────────
+[allowlist]
+description = "Rutas y patrones que no deben escanearse"
+paths = [
+  '''\.env\.example$''',
+  '''\.env\.sample$''',
+  '''docs/.*\.md$''',
+  '''README\.md$''',
+  '''CHANGELOG\.md$''',
+  '''node_modules/''',
+  '''vendor/''',
+  '''dist/''',
+  '''build/''',
+  '''coverage/''',
+  '''\.git/''',
+]
+regexes = [
+  '''(?i)example''',
+  '''(?i)sample''',
+  '''(?i)placeholder''',
+  '''(?i)your[-_]?key''',
+  '''(?i)changeme''',
+  '''(?i)xxx+''',
+]
+
+# ──────────────────────────────────────────────
+# Regla: OpenRouter API Key
+# Formato: sk-or-v1- seguido de 60+ caracteres alfanuméricos
+# ──────────────────────────────────────────────
+[[rules]]
+id = "openrouter-api-key"
+description = "OpenRouter API key"
+regex = '''sk-or-v1-[a-zA-Z0-9]{60,}'''
+keywords = ["sk-or-v1"]
+tags = ["key", "openrouter", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: DeepSeek API Key
+# Formato: sk- seguido de 32+ caracteres (DeepSeek usa este patrón)
+# ──────────────────────────────────────────────
+[[rules]]
+id = "deepseek-api-key"
+description = "DeepSeek API key"
+regex = '''sk-[a-zA-Z0-9]{32,}'''
+keywords = ["sk-"]
+tags = ["key", "deepseek", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: Anthropic / Claude API Key
+# Formato: sk-ant-api03- seguido de 95-105 caracteres
+# ──────────────────────────────────────────────
+[[rules]]
+id = "anthropic-api-key"
+description = "Anthropic (Claude) API key"
+regex = '''sk-ant-api03-[a-zA-Z0-9_-]{95,105}'''
+keywords = ["sk-ant-api03"]
+tags = ["key", "anthropic", "claude", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: OpenAI API Key (formato nuevo y legacy)
+# Formato nuevo: sk-proj- o sk-svcacct-
+# Formato legacy: sk- seguido de 48 caracteres
+# ──────────────────────────────────────────────
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API key"
+regex = '''sk-(proj-|svcacct-)?[a-zA-Z0-9]{20,}T3BlbkFJ[a-zA-Z0-9]{20,}'''
+keywords = ["sk-", "T3BlbkFJ"]
+tags = ["key", "openai", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: Google AI / Gemini API Key
+# Formato: AIzaSy seguido de 33 caracteres
+# ──────────────────────────────────────────────
+[[rules]]
+id = "google-ai-api-key"
+description = "Google AI (Gemini) API key"
+regex = '''AIzaSy[a-zA-Z0-9_-]{33}'''
+keywords = ["AIzaSy"]
+tags = ["key", "google", "gemini", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: Qwen / DashScope API Key
+# Formato: sk- seguido de 32+ caracteres (similar a DeepSeek)
+# ──────────────────────────────────────────────
+[[rules]]
+id = "qwen-dashscope-api-key"
+description = "Qwen / DashScope API key"
+regex = '''sk-[a-zA-Z0-9]{32,}'''
+keywords = ["sk-"]
+tags = ["key", "qwen", "dashscope", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: Hugging Face Token
+# Formato: hf_ seguido de 32+ caracteres
+# ──────────────────────────────────────────────
+[[rules]]
+id = "huggingface-token"
+description = "Hugging Face access token"
+regex = '''hf_[a-zA-Z0-9]{32,}'''
+keywords = ["hf_"]
+tags = ["key", "huggingface", "ia"]
+
+# ──────────────────────────────────────────────
+# Regla: Generic API Key (fallback de alta entropía)
+# Captura claves que no coinciden con patrones conocidos
+# pero tienen alta entropía y palabras clave como "api_key", "secret", "token"
+# ──────────────────────────────────────────────
+[[rules]]
+id = "generic-api-key"
+description = "Generic high-entropy secret"
+regex = '''(?i)(api[_-]?key|secret|token|passwd|password|auth)[a-z0-9_]*\s*[:=]\s*['"]?[a-zA-Z0-9_\-]{20,}['"]?'''
+keywords = ["api_key", "apikey", "secret", "token", "password", "auth"]
+entropy = 3.5
+tags = ["key", "generic"]
+
+# ──────────────────────────────────────────────
+# Regla: JWT Secret
+# Formato: cadena larga que se usa como secreto de JWT
+# ──────────────────────────────────────────────
+[[rules]]
+id = "jwt-secret"
+description = "JWT secret key"
+regex = '''(?i)jwt[_-]?secret\s*[:=]\s*['"]?[a-zA-Z0-9_\-]{32,}['"]?'''
+keywords = ["jwt_secret", "jwt-secret", "jwtsecret"]
+tags = ["key", "jwt"]
+
+# ──────────────────────────────────────────────
+# Regla: Database URL / Connection String
+# Formato: postgres://, mysql://, mongodb:// con credenciales
+# ──────────────────────────────────────────────
+[[rules]]
+id = "database-connection-string"
+description = "Database connection string with credentials"
+regex = '''(postgres|postgresql|mysql|mongodb|redis)://[a-zA-Z0-9_\-]+:[^@\s]+@[a-zA-Z0-9_\-\.]+'''
+keywords = ["postgres://", "mysql://", "mongodb://", "redis://"]
+tags = ["database", "connection-string"]
+
+# ──────────────────────────────────────────────
+# Regla: Private Key (PEM)
+# Formato: -----BEGIN PRIVATE KEY-----
+# ──────────────────────────────────────────────
+[[rules]]
+id = "private-key"
+description = "PEM private key"
+regex = '''-----BEGIN (RSA |EC |DSA |OPENSSH |PGP )?PRIVATE KEY-----'''
+keywords = ["BEGIN PRIVATE KEY", "BEGIN RSA PRIVATE KEY", "BEGIN OPENSSH PRIVATE KEY"]
+tags = ["private-key", "crypto"]

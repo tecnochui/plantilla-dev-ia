@@ -1,0 +1,69 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Ejecutando validaciones pre-commit..."
+
+# ──────────────────────────────────────────────
+# 1. lint-staged: formatea y lintea solo archivos modificados
+# ──────────────────────────────────────────────
+echo "📝 Formateando y linteando archivos modificados..."
+npx lint-staged
+
+# ──────────────────────────────────────────────
+# 2. Gitleaks: escanea secretos en archivos staged
+# ──────────────────────────────────────────────
+echo "🔐 Escaneando secretos en archivos staged..."
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --verbose --redact
+  if [ $? -ne 0 ]; then
+    echo "❌ Gitleaks detectó secretos. Revisa los hallazgos antes de commitear."
+    echo "   Si es un falso positivo, añádelo a .gitleaks.toml en [allowlist]."
+    exit 1
+  fi
+else
+  echo "⚠️  Gitleaks no está instalado. Saltando escaneo de secretos."
+  echo "   Instálalo: https://github.com/gitleaks/gitleaks#installing"
+fi
+
+# ──────────────────────────────────────────────
+# 3. ESLint de seguridad: solo archivos JS/TS staged
+# ──────────────────────────────────────────────
+echo "🛡️  Analizando seguridad con ESLint..."
+STAGED_JS=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|ts|jsx|tsx)$' || true)
+
+if [ -n "$STAGED_JS" ]; then
+  if [ -f ".eslintrc-security.js" ]; then
+    npx eslint $STAGED_JS --config .eslintrc-security.js --max-warnings 0
+    if [ $? -ne 0 ]; then
+      echo "❌ ESLint de seguridad encontró problemas. Corrígelos antes de commitear."
+      exit 1
+    fi
+  else
+    echo "⚠️  .eslintrc-security.js no encontrado. Saltando análisis de seguridad."
+  fi
+else
+  echo "ℹ️  No hay archivos JS/TS staged. Saltando ESLint de seguridad."
+fi
+
+# ──────────────────────────────────────────────
+# 4. Python: Ruff + Bandit (si aplica)
+# ──────────────────────────────────────────────
+STAGED_PY=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.py$' || true)
+
+if [ -n "$STAGED_PY" ]; then
+  if command -v ruff >/dev/null 2>&1; then
+    echo "🐍 Ejecutando Ruff..."
+    ruff check $STAGED_PY
+  fi
+
+  if command -v bandit >/dev/null 2>&1; then
+    echo "🐍 Ejecutando Bandit (seguridad Python)..."
+    bandit -q $STAGED_PY
+    if [ $? -ne 0 ]; then
+      echo "❌ Bandit encontró problemas de seguridad en Python."
+      exit 1
+    fi
+  fi
+fi
+
+echo "✅ Todas las validaciones pre-commit pasaron."

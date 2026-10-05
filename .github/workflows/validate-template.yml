@@ -1,0 +1,486 @@
+# validate-template.yml — Valida la integridad del repositorio plantilla.
+# Se ejecuta en el propio repo plantilla, no en los proyectos generados.
+# Propósito: asegurar que la plantilla está completa y funcional antes de publicar cambios.
+
+name: Validate Template
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # ──────────────────────────────────────────────
+  # 1. Validar estructura de archivos y directorios
+  # ──────────────────────────────────────────────
+  validate-structure:
+    name: Validate Structure
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Verify required files exist
+        run: |
+          echo "🔍 Verificando archivos requeridos..."
+
+          # Archivos de la raíz del repo
+          ROOT_FILES=(
+            "README.md"
+            "LICENSE"
+            "CONTRIBUTING.md"
+            "scripts/init-project.sh"
+            "scripts/README.md"
+          )
+
+          # Archivos de documentación del repo
+          DOCS_FILES=(
+            "docs/ARQUITECTURA.md"
+            "docs/FLUJO_DE_TRABAJO.md"
+            "docs/HERRAMIENTAS.md"
+            "docs/HERRAMIENTAS_SEGURIDAD.md"
+            "docs/MODELOS_IA.md"
+            "docs/SEGURIDAD.md"
+            "docs/WORKFLOWS.md"
+            "docs/GITHUB_SECRETS.md"
+            "docs/prompts/README.md"
+            "docs/prompts/01-PRD-SRD.md"
+            "docs/prompts/02-SRS.md"
+            "docs/prompts/03-Propuesta-Tecnica.md"
+            "docs/prompts/04-SSD-TDD.md"
+            "docs/prompts/05-Mapeo-NIST-OWASP.md"
+            "docs/prompts/06-Estrategia-Respaldos.md"
+            "docs/prompts/07-Plan-Pruebas.md"
+            "docs/prompts/08-Registro-Forense.md"
+          )
+
+          # Archivos del template (lo que se copia a cada proyecto nuevo)
+          TEMPLATE_FILES=(
+            "template/AGENTS.md"
+            "template/CLAUDE.md"
+            "template/GEMINI.md"
+            "template/Makefile"
+            "template/setup.sh"
+            "template/cliff.toml"
+            "template/commitlint.config.js"
+            "template/codecov.yml"
+            "template/.env.example"
+            "template/.eslintrc-security.js"
+            "template/.gitleaks.toml"
+            "template/.secrets.baseline"
+            "template/.gitignore"
+            "template/package.json"
+            "template/requirements.txt"
+            "template/.husky/pre-commit"
+            "template/.husky/commit-msg"
+            "template/.github/workflows/tests.yml"
+            "template/.github/workflows/changelog.yml"
+            "template/.github/workflows/commitlint.yml"
+            "template/.github/workflows/sast.yml"
+            "template/.github/workflows/sca.yml"
+            "template/.github/workflows/secrets.yml"
+            "template/.github/workflows/dast.yml"
+            "template/docs/PRD-SRD.md"
+            "template/docs/SRS.md"
+            "template/docs/Propuesta_Tecnica.md"
+            "template/docs/SSD-TDD.md"
+            "template/docs/Mapeo_NIST_OWASP.md"
+            "template/docs/Estrategia_Respaldos.md"
+            "template/docs/Plan_Pruebas.md"
+            "template/docs/REGISTRO_FORENSE.md"
+            "template/docs/deploy.yml.example"
+          )
+
+          MISSING=0
+
+          for file in "${ROOT_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ FALTA: $file"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ OK: $file"
+            fi
+          done
+
+          for file in "${DOCS_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ FALTA: $file"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ OK: $file"
+            fi
+          done
+
+          for file in "${TEMPLATE_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ FALTA: $file"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ OK: $file"
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo ""
+            echo "❌ Faltan $MISSING archivo(s)."
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ Todos los archivos requeridos están presentes."
+
+      - name: Verify directory structure
+        run: |
+          echo "🔍 Verificando estructura de directorios..."
+
+          REQUIRED_DIRS=(
+            "docs"
+            "docs/prompts"
+            "scripts"
+            "template"
+            "template/.github"
+            "template/.github/workflows"
+            "template/.husky"
+            "template/docs"
+          )
+
+          MISSING=0
+
+          for dir in "${REQUIRED_DIRS[@]}"; do
+            if [ ! -d "$dir" ]; then
+              echo "❌ FALTA: $dir"
+              MISSING=$((MISSING + 1))
+            else
+              echo "✅ OK: $dir"
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo ""
+            echo "❌ Faltan $MISSING directorio(s)."
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ Todos los directorios requeridos están presentes."
+
+  # ──────────────────────────────────────────────
+  # 2. ShellCheck: validar sintaxis de scripts Bash
+  # ──────────────────────────────────────────────
+  lint-shell:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run ShellCheck on scripts
+        uses: essentialkaos/shellcheck-action@v1
+        with:
+          files: |
+            scripts/init-project.sh
+            template/setup.sh
+
+      - name: Verify scripts are executable
+        run: |
+          echo "🔍 Verificando permisos de ejecución..."
+
+          SCRIPTS=(
+            "scripts/init-project.sh"
+            "template/setup.sh"
+          )
+
+          MISSING=0
+
+          for script in "${SCRIPTS[@]}"; do
+            if [ -x "$script" ]; then
+              echo "✅ OK (ejecutable): $script"
+            else
+              echo "❌ NO ejecutable: $script"
+              echo "   Ejecuta: chmod +x $script"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            exit 1
+          fi
+
+  # ──────────────────────────────────────────────
+  # 3. Validar archivos de configuración (YAML, TOML, JSON)
+  # ──────────────────────────────────────────────
+  validate-configs:
+    name: Validate Config Files
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Validate YAML files
+        run: |
+          echo "🔍 Validando archivos YAML..."
+
+          # Instalar yq para validación
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+          YAML_FILES=$(find . -type f \( -name "*.yml" -o -name "*.yaml" \) \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./venv/*")
+
+          VALID=0
+          INVALID=0
+
+          for file in $YAML_FILES; do
+            if yq eval '.' "$file" > /dev/null 2>&1; then
+              echo "✅ OK: $file"
+              VALID=$((VALID + 1))
+            else
+              echo "❌ INVÁLIDO: $file"
+              INVALID=$((INVALID + 1))
+            fi
+          done
+
+          echo ""
+          echo "Archivos YAML válidos: $VALID"
+          echo "Archivos YAML inválidos: $INVALID"
+
+          if [ "$INVALID" -gt 0 ]; then
+            exit 1
+          fi
+
+      - name: Validate TOML files
+        run: |
+          echo "🔍 Validando archivos TOML..."
+
+          # Instalar taplo (validador de TOML)
+          curl -fsSL https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz \
+            | gunzip - > /tmp/taplo
+          chmod +x /tmp/taplo
+          sudo mv /tmp/taplo /usr/local/bin/taplo
+
+          TOML_FILES=$(find . -type f -name "*.toml" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./venv/*")
+
+          VALID=0
+          INVALID=0
+
+          for file in $TOML_FILES; do
+            if taplo check "$file" > /dev/null 2>&1; then
+              echo "✅ OK: $file"
+              VALID=$((VALID + 1))
+            else
+              echo "❌ INVÁLIDO: $file"
+              INVALID=$((INVALID + 1))
+            fi
+          done
+
+          echo ""
+          echo "Archivos TOML válidos: $VALID"
+          echo "Archivos TOML inválidos: $INVALID"
+
+          if [ "$INVALID" -gt 0 ]; then
+            exit 1
+          fi
+
+      - name: Validate JSON files
+        run: |
+          echo "🔍 Validando archivos JSON..."
+
+          JSON_FILES=$(find . -type f -name "*.json" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./venv/*")
+
+          VALID=0
+          INVALID=0
+
+          for file in $JSON_FILES; do
+            if python3 -m json.tool "$file" > /dev/null 2>&1; then
+              echo "✅ OK: $file"
+              VALID=$((VALID + 1))
+            else
+              echo "❌ INVÁLIDO: $file"
+              INVALID=$((INVALID + 1))
+            fi
+          done
+
+          echo ""
+          echo "Archivos JSON válidos: $VALID"
+          echo "Archivos JSON inválidos: $INVALID"
+
+          if [ "$INVALID" -gt 0 ]; then
+            exit 1
+          fi
+
+  # ──────────────────────────────────────────────
+  # 4. Probar que init-project.sh genera un proyecto correcto
+  # ──────────────────────────────────────────────
+  test-template:
+    name: Test Template Generation
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Create test project
+        run: |
+          echo "🔍 Probando creación de proyecto de prueba..."
+          chmod +x scripts/init-project.sh
+          ./scripts/init-project.sh test-project --no-git --yes
+          echo "✅ Proyecto de prueba creado."
+
+      - name: Verify generated project structure
+        run: |
+          echo "🔍 Verificando estructura del proyecto generado..."
+
+          cd test-project
+
+          # Archivos críticos que deben existir en el proyecto generado
+          CRITICAL_FILES=(
+            "AGENTS.md"
+            "CLAUDE.md"
+            "GEMINI.md"
+            "Makefile"
+            "setup.sh"
+            "cliff.toml"
+            "commitlint.config.js"
+            "codecov.yml"
+            ".env.example"
+            ".eslintrc-security.js"
+            ".gitleaks.toml"
+            ".secrets.baseline"
+            ".gitignore"
+            "package.json"
+            "requirements.txt"
+            ".husky/pre-commit"
+            ".husky/commit-msg"
+            ".github/workflows/tests.yml"
+            ".github/workflows/sast.yml"
+            ".github/workflows/sca.yml"
+            ".github/workflows/secrets.yml"
+            ".github/workflows/changelog.yml"
+            ".github/workflows/commitlint.yml"
+            ".github/workflows/dast.yml"
+            "docs/PRD-SRD.md"
+            "docs/SRS.md"
+            "docs/Propuesta_Tecnica.md"
+            "docs/SSD-TDD.md"
+            "docs/Mapeo_NIST_OWASP.md"
+            "docs/Estrategia_Respaldos.md"
+            "docs/Plan_Pruebas.md"
+            "docs/REGISTRO_FORENSE.md"
+            "docs/GITHUB_SECRETS.md"
+            "docs/deploy.yml.example"
+            "docs/prompts/README.md"
+            "docs/prompts/01-PRD-SRD.md"
+            "docs/prompts/02-SRS.md"
+            "docs/prompts/03-Propuesta-Tecnica.md"
+            "docs/prompts/04-SSD-TDD.md"
+            "docs/prompts/05-Mapeo-NIST-OWASP.md"
+            "docs/prompts/06-Estrategia-Respaldos.md"
+            "docs/prompts/07-Plan-Pruebas.md"
+            "docs/prompts/08-Registro-Forense.md"
+            "docs/WORKFLOWS.md"
+            "docs/HERRAMIENTAS_SEGURIDAD.md"
+          )
+
+          MISSING=0
+
+          for file in "${CRITICAL_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ FALTA en proyecto generado: $file"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          # Directorios
+          CRITICAL_DIRS=(
+            "src"
+            "tests"
+            "scripts"
+            "config"
+            "docs"
+            "docs/prompts"
+            ".github/workflows"
+            ".husky"
+          )
+
+          for dir in "${CRITICAL_DIRS[@]}"; do
+            if [ ! -d "$dir" ]; then
+              echo "❌ FALTA directorio en proyecto generado: $dir"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo ""
+            echo "❌ Faltan $MISSING elementos en el proyecto generado."
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ El proyecto generado tiene la estructura correcta."
+
+      - name: Verify prompts were copied
+        run: |
+          echo "🔍 Verificando prompts copiados..."
+
+          cd test-project
+          PROMPTS_COUNT=$(find docs/prompts -maxdepth 1 -type f | wc -l)
+
+          if [ "$PROMPTS_COUNT" -ge 9 ]; then
+            echo "✅ Prompts copiados: $PROMPTS_COUNT archivos."
+          else
+            echo "❌ Solo $PROMPTS_COUNT archivos en docs/prompts/. Se esperaban al menos 9."
+            exit 1
+          fi
+
+      - name: Verify reference docs were copied
+        run: |
+          echo "🔍 Verificando docs de referencia copiados..."
+
+          cd test-project
+
+          if [ -f "docs/WORKFLOWS.md" ]; then
+            echo "✅ OK: docs/WORKFLOWS.md"
+          else
+            echo "❌ FALTA: docs/WORKFLOWS.md"
+            exit 1
+          fi
+
+          if [ -f "docs/HERRAMIENTAS_SEGURIDAD.md" ]; then
+            echo "✅ OK: docs/HERRAMIENTAS_SEGURIDAD.md"
+          else
+            echo "❌ FALTA: docs/HERRAMIENTAS_SEGURIDAD.md"
+            exit 1
+          fi
+
+      - name: Cleanup test project
+        if: always()
+        run: |
+          echo "🧹 Limpiando proyecto de prueba..."
+          rm -rf test-project
+          echo "✅ Limpieza completada."
+
+  # ──────────────────────────────────────────────
+  # 5. Markdown Lint (opcional, informativo)
+  # ──────────────────────────────────────────────
+  lint-markdown:
+    name: Lint Markdown
+    runs-on: ubuntu-24.04
+    continue-on-error: true  # Informativo, no bloquea
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v19
+        with:
+          globs: |
+            **/*.md
+            !node_modules/**
+            !venv/**
