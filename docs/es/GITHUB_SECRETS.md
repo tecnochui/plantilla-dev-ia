@@ -1,5 +1,7 @@
 # Secrets de GitHub
 
+🌍 **Lee esto en:** [Español](GITHUB_SECRETS.md) | [English](../en/GITHUB_SECRETS.md)
+
 > Guía para configurar los secrets necesarios en GitHub Actions.
 > Los secrets se cifran en reposo y solo se exponen a los workflows autorizados.
 
@@ -100,7 +102,7 @@ cat ~/.ssh/deploy_key
 
 ## Secrets opcionales (según destino de deploy)
 
-Si usas alguna de las plantillas de `docs/deploy.yml.example`, necesitas los secrets correspondientes:
+Si usas alguna de las plantillas de `template/docs/deploy.yml.example`, necesitas los secrets correspondientes:
 
 | Destino | Secrets necesarios |
 |---------|-------------------|
@@ -190,7 +192,7 @@ Para verificar que un secret está configurado correctamente:
 
 ## Referencias
 
-- [`../docs/WORKFLOWS.md`](WORKFLOWS.md) — Documentación de workflows
-- [`../docs/SEGURIDAD.md`](SEGURIDAD.md) — Alineación NIST SSDF
-- [`../docs/deploy.yml.example`](deploy.yml.example) — Plantillas de deploy
+- [`WORKFLOWS.md`](WORKFLOWS.md) — Documentación de workflows
+- [`SEGURIDAD.md`](SEGURIDAD.md) — Alineación NIST SSDF
+- [`../../template/docs/deploy.yml.example`](../../template/docs/deploy.yml.example) — Plantillas de deploy
 - [GitHub Docs — Encrypted secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
