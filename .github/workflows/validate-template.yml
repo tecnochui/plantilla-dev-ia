@@ -31,10 +31,13 @@ jobs:
           # Archivos de la raíz del repo
           ROOT_FILES=(
             "README.md"
+            "README.es.md"
             "LICENSE"
             "CONTRIBUTING.md"
+            "CONTRIBUTING.es.md"
             "scripts/init-project.sh"
             "scripts/README.md"
+            "scripts/README.es.md"
           )
 
           # Archivos de documentación del repo
