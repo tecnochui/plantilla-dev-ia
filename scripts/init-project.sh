@@ -258,8 +258,14 @@ log_ok "Directorios creados: src, tests, scripts, config"
 # Reemplazar placeholders
 # ──────────────────────────────────────────────
 log_info "Reemplazando placeholders..."
+
+# Placeholder en español
 find "$TARGET_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.toml" -o -name "*.sh" \) \
   -exec sed -i "s/\[NOMBRE DEL PROYECTO\]/$PROJECT_NAME/g" {} \;
+
+# Placeholder en inglés
+find "$TARGET_DIR" -type f \( -name "*.md" -o -name "*.json" -o -name "*.yml" -o -name "*.yaml" -o -name "*.toml" -o -name "*.sh" \) \
+  -exec sed -i "s/\[PROJECT NAME\]/$PROJECT_NAME/g" {} \;
 
 log_ok "Placeholders reemplazados."
 
