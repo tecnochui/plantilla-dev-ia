@@ -1,5 +1,7 @@
 # Herramientas de Seguridad — Instalación y Uso
 
+🌍 **Lee esto en:** [Español](HERRAMIENTAS_SEGURIDAD.md) | [English](../en/SECURITY_TOOLS.md)
+
 > Guía completa para instalar y usar las herramientas de seguridad del flujo de trabajo.
 > Todas son gratuitas y de código abierto. Ninguna requiere cuenta ni API key.
 
@@ -435,7 +437,7 @@ El script pide confirmación antes de usar `sudo`.
 
 ## Referencias
 
-- [`../docs/prompts/05-Mapeo-NIST-OWASP.md`](../docs/prompts/05-Mapeo-NIST-OWASP.md) — Mapeo de seguridad
-- [`../docs/prompts/07-Plan-Pruebas.md`](../docs/prompts/07-Plan-Pruebas.md) — Plan de pruebas
-- [`../scripts/README.md`](../scripts/README.md) — Scripts del repositorio
-- [`../setup.sh`](../setup.sh) — Instalación automatizada
+- [`prompts/05-Mapeo-NIST-OWASP.md`](prompts/05-Mapeo-NIST-OWASP.md) — Mapeo de seguridad
+- [`prompts/07-Plan-Pruebas.md`](prompts/07-Plan-Pruebas.md) — Plan de pruebas
+- [`../../scripts/README.es.md`](../../scripts/README.es.md) — Scripts del repositorio
+- [`../../template/setup.sh`](../../template/setup.sh) — Instalación automatizada

@@ -1,5 +1,7 @@
 # Flujo de Trabajo Completo
 
+🌍 **Lee esto en:** [Español](FLUJO_DE_TRABAJO.md) | [English](../en/WORKFLOW.md)
+
 > Diagrama y explicación del proceso end-to-end, desde "quiero hacer un sistema" hasta "release en producción".
 
 ---

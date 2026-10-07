@@ -1,5 +1,7 @@
 # Guía de Modelos de IA
 
+🌍 **Lee esto en:** [Español](MODELOS_IA.md) | [English](../en/AI_MODELS.md)
+
 > Qué modelo usar para cada tarea, cuánto cuesta, y cómo mantener el presupuesto bajo control.
 
 ---

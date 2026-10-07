@@ -1,5 +1,7 @@
 # Workflows de GitHub Actions
 
+🌍 **Lee esto en:** [Español](WORKFLOWS.md) | [English](../en/WORKFLOWS.md)
+
 > Documentación de los 7 workflows que se ejecutan automáticamente en cada proyecto creado desde `plantilla-dev-ia`.
 
 ---
@@ -140,7 +142,7 @@ revert(scope): descripción
 **Cómo saltarlo:**
 - No se puede saltar directamente. Si un hallazgo es falso positivo:
   1. Añadir un comentario en el código: `# nosemgrep: rule-id`
-  2. Documentar la excepción en `docs/Plan_Pruebas.md` → sección 9
+  2. Documentar la excepción en `docs/Test_Plan.md` → sección 9
 
 **Troubleshooting:**
 
@@ -178,7 +180,7 @@ revert(scope): descripción
 
 **Cómo saltarlo:**
 - Actualizar la dependencia vulnerable
-- Si no hay actualización disponible: documentar excepción en `docs/Plan_Pruebas.md` y añadir un comentario en `.trivyignore`
+- Si no hay actualización disponible: documentar excepción en `docs/Test_Plan.md` y añadir un comentario en `.trivyignore`
 
 ---
 
@@ -304,7 +306,7 @@ El workflow se dispara automáticamente y actualiza `CHANGELOG.md`.
 
 ## Referencias
 
-- [`../docs/SEGURIDAD.md`](SEGURIDAD.md) — Alineación NIST SSDF y OWASP
-- [`../docs/HERRAMIENTAS_SEGURIDAD.md`](HERRAMIENTAS_SEGURIDAD.md) — Instalación de herramientas
-- [`../docs/GITHUB_SECRETS.md`](GITHUB_SECRETS.md) — Configuración de secrets
-- [`../docs/prompts/07-Plan-Pruebas.md`](prompts/07-Plan-Pruebas.md) — Plan de pruebas
+- [`SEGURIDAD.md`](SEGURIDAD.md) — Alineación NIST SSDF y OWASP
+- [`HERRAMIENTAS_SEGURIDAD.md`](HERRAMIENTAS_SEGURIDAD.md) — Instalación de herramientas
+- [`GITHUB_SECRETS.md`](GITHUB_SECRETS.md) — Configuración de secrets
+- [`prompts/07-Plan-Pruebas.md`](prompts/07-Plan-Pruebas.md) — Plan de pruebas

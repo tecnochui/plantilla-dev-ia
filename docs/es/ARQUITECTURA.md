@@ -1,5 +1,7 @@
 # Arquitectura del Flujo de Trabajo
 
+🌍 **Lee esto en:** [Español](ARQUITECTURA.md) | [English](../en/ARCHITECTURE.md)
+
 > Este documento explica **por qué** el flujo está diseñado así, no solo **qué** hace.
 
 ---

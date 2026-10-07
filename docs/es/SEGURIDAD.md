@@ -1,5 +1,7 @@
 # Seguridad — Alineación NIST SSDF y OWASP Top 10:2025
 
+🌍 **Lee esto en:** [Español](SEGURIDAD.md) | [English](../en/SECURITY.md)
+
 > Cómo este flujo implementa prácticas de seguridad reconocidas, adaptadas a un desarrollador individual.
 
 ---

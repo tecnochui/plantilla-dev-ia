@@ -1,5 +1,7 @@
 # Stack de Herramientas
 
+🌍 **Lee esto en:** [Español](HERRAMIENTAS.md) | [English](../en/TOOLS.md)
+
 > Explicación de cada herramienta del flujo, por qué se eligió, y alternativas descartadas.
 
 ---
