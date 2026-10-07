@@ -1,195 +1,224 @@
-# Scripts del repositorio
+# Repository Scripts
 
-> Utilidades para inicializar y gestionar proyectos basados en `plantilla-dev-ia`.
+🌍 **Read this in:** [Español](README.es.md) | [English](README.md)
+
+> Utilities to initialize and manage projects based on `plantilla-dev-ia`.
 
 ---
 
-## Índice
+## Index
 
-| Script | Ubicación | Propósito |
-|--------|-----------|-----------|
-| [`init-project.sh`](#init-projectsh) | `scripts/` | Crea un proyecto nuevo desde la plantilla |
-| [`setup.sh`](#setupsh) | `template/` | Verifica estructura e instala herramientas en un proyecto |
+| Script | Location | Purpose |
+|--------|----------|---------|
+| [`init-project.sh`](#init-projectsh) | `scripts/` | Creates a new project from the template |
+| [`setup.sh`](#setupsh) | `template/` | Verifies structure and installs tools in a project |
 
 ---
 
 ## `init-project.sh`
 
-Crea un proyecto nuevo a partir de la carpeta `template/` del repositorio. Copia toda la estructura de archivos, reemplaza los placeholders con el nombre del proyecto, inicializa Git (opcional), y puede crear el repositorio en GitHub (opcional).
+Creates a new project from the `template/` folder of the repository. Copies the entire file structure, replaces placeholders with the project name, initializes Git (optional), and can create the GitHub repository (optional).
 
-### Requisitos
+### Requirements
 
-| Requisito | Obligatorio | Notas |
-|-----------|-------------|-------|
-| **Bash 4+** | Sí | Viene por defecto en Linux Mint 22.3 |
-| **Git** | Recomendado | Necesario para inicializar el repositorio |
-| **`gh` CLI** | Opcional | Solo si usas `--private` o `--public` |
+| Requirement | Mandatory | Notes |
+|-------------|-----------|-------|
+| **Bash 4+** | Yes | Comes by default in Linux Mint 22.3 |
+| **Git** | Recommended | Required to initialize the repository |
+| **`gh` CLI** | Optional | Only if you use `--private` or `--public` |
 
-**Instalar `gh` CLI en Linux Mint:**
+**Install `gh` CLI on Linux Mint:**
 
 ```bash
 sudo apt install gh
 gh auth login
 ```
 
-### Uso básico
+### Basic usage
 
 ```bash
-./scripts/init-project.sh <nombre-del-proyecto> [opciones]
+./scripts/init-project.sh <project-name> [options]
 ```
 
-### Opciones
+### Options
 
-| Opción | Valor por defecto | Descripción |
-|--------|-------------------|-------------|
-| `--path <ruta>` | `.` (directorio actual) | Directorio donde crear el proyecto |
-| `--git` | `true` | Inicializar repositorio Git con commit inicial |
-| `--no-git` | — | No inicializar Git |
-| `--private` | — | Crear repo privado en GitHub (requiere `gh` CLI) |
-| `--public` | — | Crear repo público en GitHub (requiere `gh` CLI) |
-| `--template <ruta>` | `template/` del repo | Usar una plantilla alternativa |
-| `--branch <rama>` | `main` | Rama de la plantilla a usar |
-| `--help`, `-h` | — | Mostrar ayuda |
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--path <path>` | `.` (current directory) | Directory where the project will be created |
+| `--git` | `true` | Initialize Git repository with initial commit |
+| `--no-git` | — | Do not initialize Git |
+| `--private` | — | Create private GitHub repo (requires `gh` CLI) |
+| `--public` | — | Create public GitHub repo (requires `gh` CLI) |
+| `--template <path>` | `template/` of the repo | Use an alternative template |
+| `--yes`, `-y` | — | Auto-confirm without prompt (useful in CI) |
+| `--help`, `-h` | — | Show help |
 
-### Ejemplos
+### Examples
 
-#### 1. Proyecto personal, en el directorio actual
+#### 1. Personal project, in the current directory
 
 ```bash
-./scripts/init-project.sh mi-app-personal
+./scripts/init-project.sh my-personal-app
 ```
 
-Crea `./mi-app-personal/` con toda la estructura, inicializa Git, hace el primer commit.
+Creates `./my-personal-app/` with the entire structure, initializes Git, makes the first commit.
 
-#### 2. Proyecto en un directorio específico
+#### 2. Project in a specific directory
 
 ```bash
-./scripts/init-project.sh mi-app --path ~/proyectos
+./scripts/init-project.sh my-app --path ~/projects
 ```
 
-Crea `~/proyectos/mi-app/`.
+Creates `~/projects/my-app/`.
 
-#### 3. Proyecto para cliente, repo privado en GitHub
+#### 3. Client project, private GitHub repo
 
 ```bash
-./scripts/init-project.sh sistema-cliente-x --private
+./scripts/init-project.sh client-system-x --private
 ```
 
-Crea el proyecto localmente, inicializa Git, y crea un repositorio privado en GitHub con `gh repo create`.
+Creates the project locally, initializes Git, and creates a private GitHub repository with `gh repo create`.
 
-#### 4. Proyecto open source, repo público en GitHub
+#### 4. Open source project, public GitHub repo
 
 ```bash
-./scripts/init-project.sh mi-libreria --public
+./scripts/init-project.sh my-library --public
 ```
 
-Igual que el anterior, pero el repo es público.
+Same as the previous one, but the repo is public.
 
-#### 5. Proyecto sin Git (para copiar a otro sistema)
+#### 5. Project without Git (to copy to another system)
 
 ```bash
-./scripts/init-project.sh mi-app --no-git
+./scripts/init-project.sh my-app --no-git
 ```
 
-Útil si vas a copiar el proyecto a otra máquina y prefieres inicializar Git manualmente allí.
+Useful if you are going to copy the project to another machine and prefer to initialize Git manually there.
 
-#### 6. Usar una plantilla alternativa
+#### 6. Use an alternative template
 
 ```bash
-./scripts/init-project.sh mi-app --template ~/mi-plantilla-custom
+./scripts/init-project.sh my-app --template ~/my-custom-template
 ```
 
-Útil si tienes una versión modificada de la plantilla con reglas específicas de tu equipo o de un tipo de proyecto.
+Useful if you have a modified version of the template with specific rules for your team or a type of project.
 
-#### 7. Combinaciones
+#### 7. Auto-confirm (CI or scripts)
 
 ```bash
-./scripts/init-project.sh mi-app --path ~/proyectos --private --template ~/plantillas/web-app
+./scripts/init-project.sh my-app --no-git --yes
 ```
 
-Todas las opciones se pueden combinar.
+Skips the confirmation prompt. Useful in CI pipelines or automation.
 
-### Flujo de ejecución
+#### 8. Combinations
 
-El script sigue estos pasos:
-
-```
-1. Valida que el nombre del proyecto esté presente.
-2. Detecta la carpeta template/ (o usa --template si se especifica).
-3. Verifica que el directorio destino no exista.
-4. Muestra un resumen y pide confirmación (y/N).
-5. Copia la plantilla al directorio destino.
-6. Reemplaza [NOMBRE DEL PROYECTO] por el nombre real en:
-   - Archivos .md, .json, .yml, .yaml, .toml, .sh
-7. Inicializa Git (si --git, que es por defecto).
-8. Crea el repo en GitHub (si --private o --public).
-9. Muestra los próximos pasos.
+```bash
+./scripts/init-project.sh my-app --path ~/projects --private --template ~/templates/web-app
 ```
 
-### Ejemplo de salida
+All options can be combined.
+
+### Execution flow
+
+The script follows these steps:
+
+```
+1. Validates that the project name is present.
+2. Detects the template/ folder (or uses --template if specified).
+3. Verifies that the target directory does not exist.
+4. Shows a summary and asks for confirmation (y/N), unless --yes is used.
+5. Copies the template to the target directory.
+6. Copies the prompts and reference docs from the repo.
+7. Creates empty directories (src, tests, scripts, config) with .gitkeep.
+8. Replaces [NOMBRE DEL PROYECTO] and [PROJECT NAME] placeholders with the real name in:
+   - .md, .json, .yml, .yaml, .toml, .sh files
+9. Initializes Git (if --git, which is the default).
+10. Creates the GitHub repo (if --private or --public).
+11. Shows the next steps.
+```
+
+### Example output
 
 ```
 ╔══════════════════════════════════════════════╗
-║         Crear nuevo proyecto                ║
+║         Create new project                   ║
 ╚══════════════════════════════════════════════╝
 
-  Nombre:       mi-app
-  Destino:      /home/tu-usuario/mi-app
-  Plantilla:    /home/tu-usuario/plantilla-dev-ia/template
+  Name:         my-app
+  Destination:  /home/your-user/my-app
+  Template:     /home/your-user/plantilla-dev-ia/template
   Git:          true
-  Crear repo:   false
+  Create repo:  false
 
-¿Continuar? [y/N] y
+Continue? [y/N] y
 
-[INFO] Copiando plantilla...
-[INFO] Reemplazando placeholders...
-[OK]   Placeholders reemplazados.
-[INFO] Inicializando repositorio Git...
-[OK]   Repositorio Git inicializado con commit inicial.
+[INFO] Copying template...
+[INFO] Copying documentation prompts...
+[OK]   Prompts copied to docs/prompts/ (9 files).
+[OK]   Prompts verified: 9 files in docs/prompts/
+[OK]   Copied: docs/WORKFLOWS.md
+[OK]   Copied: docs/HERRAMIENTAS_SEGURIDAD.md
+[INFO] Creating project directories...
+[OK]   Directories created: src, tests, scripts, config
+[INFO] Replacing placeholders...
+[OK]   Placeholders replaced.
+[INFO] Initializing Git repository...
+[OK]   Git repository initialized with initial commit.
 
 ╔══════════════════════════════════════════════════════════════╗
-║                    ✅ PROYECTO CREADO                        ║
+║                    ✅ PROJECT CREATED                        ║
 ╚══════════════════════════════════════════════════════════════╝
 
-📋 Próximos pasos:
+📋 Next steps:
 
-  1. cd /home/tu-usuario/mi-app
+  1. cd /home/your-user/my-app
 
-  2. Editar AGENTS.md y verificar el nombre del proyecto.
+  2. Edit AGENTS.md and verify the project name.
 
-  3. Instalar herramientas de seguridad:
+  3. Install security tools:
      ./setup.sh --install-tools
 
-  4. Generar la documentación fundacional:
-     Revisar docs/prompts/README.md y seguir los 8 prompts secuenciales.
+  4. Generate the foundational documentation:
+     Review docs/prompts/README.md and follow the 8 sequential prompts.
 
-  5. Configurar secrets en GitHub:
-     - CODECOV_TOKEN (para cobertura)
-     - SSH_HOST, SSH_USER, SSH_KEY (si usas deploy.yml)
+  5. Configure GitHub secrets:
+     - CODECOV_TOKEN (for coverage)
+     - SSH_HOST, SSH_USER, SSH_KEY (if you use deploy.yml)
 
-[OK]   Listo para empezar.
+[OK]   Ready to start.
 ```
 
-### Qué hace exactamente
+### What it does exactly
 
-#### Copia la plantilla
+#### Copy the template
 
 ```bash
 cp -r "$TEMPLATE_DIR"/. "$TARGET_DIR"/
 ```
 
-Copia **todo el contenido** de `template/`, incluidos archivos ocultos (como `.gitignore`, `.husky/`, `.github/`).
+Copies **all the content** of `template/`, including hidden files (like `.gitignore`, `.husky/`, `.github/`).
 
-#### Reemplaza placeholders
+#### Copy documentation prompts
+
+The prompts live in `docs/prompts/` of the template repo, not in `template/`. They are copied to the new project so they are available locally.
+
+#### Create empty directories
+
+The template does not include `src/`, `tests/`, `scripts/`, `config/` because they are empty by default. The script creates them with `.gitkeep` files so Git versions them.
+
+#### Replace placeholders
 
 ```bash
 find "$TARGET_DIR" -type f \( -name "*.md" -o -name "*.json" -o ... \) \
   -exec sed -i "s/\[NOMBRE DEL PROYECTO\]/$PROJECT_NAME/g" {} \;
+find "$TARGET_DIR" -type f \( -name "*.md" -o -name "*.json" -o ... \) \
+  -exec sed -i "s/\[PROJECT NAME\]/$PROJECT_NAME/g" {} \;
 ```
 
-Busca `[NOMBRE DEL PROYECTO]` en todos los archivos de texto relevantes y lo reemplaza por el nombre real. Esto afecta a `AGENTS.md`, `README.md`, `docs/PRD-SRD.md`, etc.
+Searches for `[NOMBRE DEL PROYECTO]` and `[PROJECT NAME]` in all relevant text files and replaces them with the real name. This affects `AGENTS.md`, `README.md`, `docs/PRD-SRD.md`, etc.
 
-#### Inicializa Git
+#### Initialize Git
 
 ```bash
 git init -q
@@ -197,115 +226,111 @@ git add .
 git commit -q -m "chore: initial setup from plantilla-dev-ia"
 ```
 
-Crea un repositorio Git local con un único commit inicial.
+Creates a local Git repository with a single initial commit.
 
-#### Crea repo en GitHub (opcional)
+#### Create GitHub repo (optional)
 
 ```bash
 gh repo create "$PROJECT_NAME" $REPO_VISIBILITY --source=. --push
 ```
 
-Usa el `gh` CLI para crear el repositorio remoto y hacer push del commit inicial.
+Uses the `gh` CLI to create the remote repository and push the initial commit.
 
 ### Troubleshooting
 
-| Problema | Causa | Solución |
-|----------|-------|----------|
-| `El directorio 'X' ya existe` | Hay un directorio con el mismo nombre | Elige otro nombre o elimina el directorio existente |
-| `No se encontró la plantilla en: X` | La carpeta `template/` no existe | Verifica que estás ejecutando el script desde la raíz del repo |
-| `gh CLI no está instalado` | Falta `gh` en el sistema | `sudo apt install gh && gh auth login` |
-| `gh: not authenticated` | `gh` no tiene sesión activa | `gh auth login` |
-| `Permission denied` al ejecutar | Falta permiso de ejecución | `chmod +x scripts/init-project.sh` |
-| Los placeholders no se reemplazan | El archivo tiene otro nombre o extensión | Añade el patrón al `find` del script |
-| El nombre tiene espacios | No se recomienda en nombres de proyecto | Usa guiones: `mi-app` en lugar de `mi app` |
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| `Directory 'X' already exists` | A directory with the same name exists | Choose another name or delete the existing directory |
+| `Template not found at: X` | The `template/` folder does not exist | Verify you are running the script from the repo root |
+| `gh CLI is not installed` | `gh` is missing from the system | `sudo apt install gh && gh auth login` |
+| `gh: not authenticated` | `gh` has no active session | `gh auth login` |
+| `Permission denied` when running | Missing execute permission | `chmod +x scripts/init-project.sh` |
+| Placeholders are not replaced | The file has another name or extension | Add the pattern to the script's `find` |
+| The name has spaces | Not recommended for project names | Use hyphens: `my-app` instead of `my app` |
 
-### Qué NO hace
+### What it does NOT do
 
-- **No instala herramientas de seguridad.** Eso lo hace `setup.sh --install-tools` (dentro del proyecto).
-- **No configura secrets de GitHub.** Debes hacerlo manualmente.
-- **No genera la documentación.** Solo crea los placeholders.
-- **No hace push si no usas `--private` o `--public`.**
+- **Does not install security tools.** That is done by `setup.sh --install-tools` (inside the project).
+- **Does not configure GitHub secrets.** You must do that manually.
+- **Does not generate documentation.** It only creates the placeholders.
+- **Does not push** unless you use `--private` or `--public`.
 
-### Después de crear el proyecto
+### After creating the project
 
 ```bash
-cd mi-app
-./setup.sh --check           # Verifica estructura
-./setup.sh --install-tools   # Instala herramientas
+cd my-app
+./setup.sh --check           # Verify structure
+./setup.sh --install-tools   # Install tools
 ```
 
-Esto:
-- Verifica que la estructura esté completa.
-- Instala herramientas de seguridad (Semgrep, Trivy, Gitleaks, etc.).
-- Configura Husky.
-- Instala dependencias de `package.json` y `requirements.txt` (si existen).
+This:
+- Verifies that the structure is complete.
+- Installs security tools (Semgrep, Trivy, Gitleaks, etc.).
+- Configures Husky.
+- Installs dependencies from `package.json` and `requirements.txt` (if they exist).
 
-Luego:
-- Edita `AGENTS.md` con el nombre real del proyecto.
-- Sigue los 8 prompts en `docs/prompts/README.md`.
+Then:
+- Edit `AGENTS.md` with the real project name.
+- Follow the 8 prompts in `docs/prompts/README.md`.
 
 ---
 
 ## `setup.sh`
 
-`setup.sh` vive en `template/` del repositorio plantilla, y se copia a **cada proyecto nuevo** al crearlo con `init-project.sh` o al usar "Use this template" de GitHub.
+`setup.sh` lives in `template/` of the template repository, and is copied to **each new project** when it is created with `init-project.sh`.
 
-### Diferencias con el `setup.sh` original (raíz del repo plantilla)
-
-> **Nota:** El repositorio plantilla puede tener un `setup.sh` en su raíz (heredado de versiones anteriores). Ese script está **deprecado** y no debe usarse. El `setup.sh` activo es el que está en `template/setup.sh`, que se copia a cada proyecto. Si el `setup.sh` de la raíz sigue existiendo, se recomienda eliminarlo para evitar confusión.
-
-### Uso
+### Usage
 
 ```bash
 ./setup.sh [--force] [--dry-run] [--install-tools] [--check]
 ```
 
-| Opción | Descripción |
+| Option | Description |
 |--------|-------------|
-| `--check` | Solo verifica la estructura (no modifica nada) |
-| `--force` | Sobrescribe archivos existentes (no usado actualmente) |
-| `--dry-run` | Muestra qué haría sin crear ni instalar nada |
-| `--install-tools` | Instala herramientas de seguridad vía `apt`/`pip`/binario |
+| `--check` | Only verifies the structure (does not modify anything) |
+| `--force` | Overwrites existing files (not used currently) |
+| `--dry-run` | Shows what it would do without creating or installing anything |
+| `--install-tools` | Installs security tools via `apt`/`pip`/binary |
 
-### Ejemplos
+### Examples
 
 ```bash
-# Solo verificar estructura
+# Only verify structure
 ./setup.sh --check
 
-# Ver qué haría sin ejecutar nada
+# See what it would do without executing anything
 ./setup.sh --dry-run
 
-# Verificar + instalar herramientas
+# Verify + install tools
 ./setup.sh --install-tools
 
-# Forzar recreación de directorios faltantes
+# Force recreation of missing directories
 ./setup.sh --force
 ```
 
-### Qué verifica
+### What it verifies
 
-El script verifica que existan:
+The script verifies that the following exist:
 
-**Directorios:**
+**Directories:**
 - `src/`, `tests/`, `scripts/`, `config/`
 - `docs/`, `docs/prompts/`
 - `.github/workflows/`, `.husky/`
 
-**Archivos (30+):**
+**Files (30+):**
 - `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`
-- `cliff.toml`, `commitlint.config.js`, `codecov.yml`
-- `.eslintrc-security.js`, `.gitleaks.toml`, `.secrets.baseline`, `.gitignore`
+- `Makefile`, `cliff.toml`, `commitlint.config.js`, `codecov.yml`
+- `.env.example`, `.eslintrc-security.js`, `.gitleaks.toml`, `.secrets.baseline`, `.gitignore`
 - `.husky/pre-commit`, `.husky/commit-msg`
-- Los 7 workflows de `.github/workflows/`
-- Todos los docs en `docs/` y `docs/prompts/`
+- The 7 workflows in `.github/workflows/`
+- All docs in `docs/` and `docs/prompts/`
 
-Si falta un directorio, lo crea (salvo en `--check`). Si falta un archivo, lo reporta (no lo recrea).
+If a directory is missing, it creates it (except in `--check`). If a file is missing, it reports it (does not recreate it).
 
-### Qué instala con `--install-tools`
+### What it installs with `--install-tools`
 
-| Herramienta | Vía | Requiere sudo |
-|-------------|-----|---------------|
+| Tool | Method | Requires sudo |
+|------|--------|---------------|
 | Semgrep | `pip3 install --user` | No |
 | detect-secrets | `pip3 install --user` | No |
 | Bandit | `pip3 install --user` | No |
@@ -314,69 +339,66 @@ Si falta un directorio, lo crea (salvo en `--check`). Si falta un archivo, lo re
 | Mypy | `pip3 install --user` | No |
 | pytest + pytest-cov | `pip3 install --user` | No |
 | pre-commit | `pip3 install --user` | No |
-| Trivy | `apt` (repositorio de Aqua Security) | Sí |
-| Gitleaks | Binario desde GitHub Releases | Sí (a `/usr/local/bin`) |
-| git-cliff | Binario desde GitHub Releases | Sí (a `/usr/local/bin`) |
+| Trivy | `apt` (Aqua Security repository) | Yes |
+| Gitleaks | Binary from GitHub Releases | Yes (to `/usr/local/bin`) |
+| git-cliff | Binary from GitHub Releases | Yes (to `/usr/local/bin`) |
 
-**Nota:** El script pide confirmación antes de usar `sudo`. Si dices que no, omite la instalación vía `apt`/binario pero continúa con las de `pip`.
+**Note:** The script asks for confirmation before using `sudo`. If you say no, it skips the `apt`/binary installation but continues with the `pip` ones.
 
-### Qué hace además
+### What it does additionally
 
-- **Instala dependencias del proyecto:**
-  - Si existe `package.json` → `npm install`
-  - Si existe `requirements.txt` → `pip3 install --user -r requirements.txt`
-- **Configura Husky:** ejecuta `npx husky install` y da permisos a los hooks.
+- **Installs project dependencies:**
+  - If `package.json` exists → `npm install`
+  - If `requirements.txt` exists → `pip3 install --user -r requirements.txt`
+- **Configures Husky:** runs `npx husky install` and gives permissions to the hooks.
 
-### Diferencias entre `init-project.sh` y `setup.sh`
+### Differences between `init-project.sh` and `setup.sh`
 
-| Aspecto | `init-project.sh` | `setup.sh` |
-|---------|-------------------|-----------|
-| **Dónde vive** | `scripts/` del repo plantilla | `template/` del repo plantilla (se copia a cada proyecto) |
-| **Dónde se ejecuta** | En el repo plantilla | Dentro de un proyecto creado |
-| **Cuándo se usa** | Una vez, para crear el proyecto | Dentro del proyecto, cuando sea necesario |
-| **Qué hace** | Copia la plantilla + Git + repo GitHub | Verifica estructura + instala herramientas + dependencias |
-| **Opciones** | 8 (`path`, `git`, `private`, `public`, etc.) | 4 (`check`, `force`, `dry-run`, `install-tools`) |
-| **Dependencias** | `gh` CLI (opcional) | `pip3`, `apt`, `sudo`, `npm` |
+| Aspect | `init-project.sh` | `setup.sh` |
+|--------|-------------------|-----------|
+| **Where it lives** | `scripts/` of the template repo | `template/` of the template repo (copied to each project) |
+| **Where it runs** | In the template repo | Inside a created project |
+| **When it is used** | Once, to create the project | Inside the project, when needed |
+| **What it does** | Copies the template + Git + GitHub repo | Verifies structure + installs tools + dependencies |
+| **Options** | 7 (`path`, `git`, `private`, `public`, `template`, `yes`, `help`) | 4 (`check`, `force`, `dry-run`, `install-tools`) |
+| **Dependencies** | `gh` CLI (optional) | `pip3`, `apt`, `sudo`, `npm` |
 
 ---
 
-## Solución de problemas comunes
+## Common troubleshooting
 
 ### `init-project.sh`
 
-| Problema | Causa | Solución |
-|----------|-------|----------|
-| `El directorio 'X' ya existe` | Hay un directorio con el mismo nombre | Elige otro nombre o elimina el directorio existente |
-| `No se encontró la plantilla en: X` | La carpeta `template/` no existe | Ejecuta el script desde la raíz del repo |
-| `gh CLI no está instalado` | Falta `gh` en el sistema | `sudo apt install gh && gh auth login` |
-| `gh: not authenticated` | `gh` no tiene sesión activa | `gh auth login` |
-| `Permission denied` | Falta permiso de ejecución | `chmod +x scripts/init-project.sh` |
-| Los placeholders no se reemplazan | Extensión no soportada | Añadir patrón al `find` del script |
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| `Directory 'X' already exists` | A directory with the same name exists | Choose another name or delete the existing directory |
+| `Template not found at: X` | The `template/` folder does not exist | Run the script from the repo root |
+| `gh CLI is not installed` | `gh` is missing from the system | `sudo apt install gh && gh auth login` |
+| `gh: not authenticated` | `gh` has no active session | `gh auth login` |
+| `Permission denied` | Missing execute permission | `chmod +x scripts/init-project.sh` |
+| Placeholders are not replaced | Extension not supported | Add pattern to the script's `find` |
 
 ### `setup.sh`
 
-| Problema | Causa | Solución |
-|----------|-------|----------|
-| `Faltan N archivos` | El proyecto está incompleto | Copiar manualmente desde `template/` del repo plantilla, o recrear con `init-project.sh` |
-| `pip3: command not found` | Python sin pip | `sudo apt install python3-pip` |
-| `Trivy no se instala` | Repositorio no añadido | Verificar `/etc/apt/sources.list.d/trivy.list` |
-| `Gitleaks no se instala` | Arquitectura no soportada | Comprobar `uname -m` (x86_64, aarch64) |
-| `Fallo al instalar dependencias Node.js` | `npm` no está o `package.json` inválido | Verificar `node --version` y `npm --version` |
-| `Husky no se configura` | Falta `npx` o `package.json` | Verificar instalación de Node.js |
+| Problem | Cause | Solution |
+|---------|-------|----------|
+| `Missing N files` | The project is incomplete | Copy manually from `template/` of the template repo, or recreate with `init-project.sh` |
+| `pip3: command not found` | Python without pip | `sudo apt install python3-pip` |
+| `Trivy not installed` | Repository not added | Check `/etc/apt/sources.list.d/trivy.list` |
+| `Gitleaks not installed` | Architecture not supported | Check `uname -m` (x86_64, aarch64) |
+| `Failed to install Node.js dependencies` | `npm` missing or invalid `package.json` | Check `node --version` and `npm --version` |
+| `Husky not configured` | Missing `npx` or `package.json` | Check Node.js installation |
 
 ---
 
-## Referencias
+## References
 
-- [`../README.md`](../README.md) — README principal del repositorio
-- [`../docs/ARQUITECTURA.md`](../docs/ARQUITECTURA.md) — Filosofía y decisiones de diseño
-- [`../docs/FLUJO_DE_TRABAJO.md`](../docs/FLUJO_DE_TRABAJO.md) — Flujo end-to-end
-- [`../docs/HERRAMIENTAS.md`](../docs/HERRAMIENTAS.md) — Stack de herramientas
-- [`../docs/HERRAMIENTAS_SEGURIDAD.md`](../docs/HERRAMIENTAS_SEGURIDAD.md) — Instalación de herramientas de seguridad
-- [`../docs/WORKFLOWS.md`](../docs/WORKFLOWS.md) — Documentación de workflows de GitHub Actions
-- [`../docs/GITHUB_SECRETS.md`](../docs/GITHUB_SECRETS.md) — Secrets necesarios en GitHub
-- [`../docs/prompts/README.md`](../docs/prompts/README.md) — Prompts secuenciales
-
----
-
-> **¿Encontraste un bug o quieres añadir una opción?** Abre un issue o un PR siguiendo [`CONTRIBUTING.md`](../CONTRIBUTING.md).
+- [`../README.md`](../README.md) — Main repository README
+- [`../README.es.md`](../README.es.md) — Main repository README (Spanish)
+- [`../docs/ARQUITECTURA.md`](../docs/ARQUITECTURA.md) — Philosophy and design decisions
+- [`../docs/FLUJO_DE_TRABAJO.md`](../docs/FLUJO_DE_TRABAJO.md) — End-to-end workflow
+- [`../docs/HERRAMIENTAS.md`](../docs/HERRAMIENTAS.md) — Tool stack
+- [`../docs/HERRAMIENTAS_SEGURIDAD.md`](../docs/HERRAMIENTAS_SEGURIDAD.md) — Security tools installation
+- [`../docs/WORKFLOWS.md`](../docs/WORKFLOWS.md) — GitHub Actions workflows documentation
+- [`../docs/GITHUB_SECRETS.md`](../docs/GITHUB_SECRETS.md) — Required GitHub secrets
+- [`../docs/prompts/README.md`](../docs/prompts/README.md) — Sequential prompts

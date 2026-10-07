@@ -1,27 +1,29 @@
-# [NOMBRE DEL PROYECTO]
+# [PROJECT NAME]
 
-> [Descripción breve de una línea]
+🌍 **Read this in:** [Español](README.es.md) | [English](README.md)
 
-## Estado
-[En desarrollo / Beta / Estable]
+> [One-line brief description]
 
-## Requisitos
-- [Lenguaje] [versión]
-- [Dependencias principales]
+## Status
+[In development / Beta / Stable]
 
-## Instalación
+## Requirements
+- [Language] [version]
+- [Main dependencies]
+
+## Installation
 ```bash
-# Clonar
+# Clone
 git clone [url]
 
-# Instalar dependencias
+# Install dependencies
 npm install        # Node.js
 pip install -r requirements.txt  # Python
 ```
 
-## Uso
+## Usage
 ```bash
-# Desarrollo
+# Development
 make help
 ```
 
@@ -30,25 +32,25 @@ make help
 make test
 ```
 
-## Seguridad
-Este proyecto sigue prácticas alineadas con OWASP Top 10:2025 y NIST SSDF.
+## Security
+This project follows practices aligned with OWASP Top 10:2025 and NIST SSDF.
 - SAST: Semgrep
 - SCA: Trivy
 - Secrets: Gitleaks + detect-secrets
 - DAST: OWASP ZAP (staging)
 
-📖 Ver [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md) para detalles.
+📖 See [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md) for details.
 
-## Documentación
+## Documentation
 - [PRD-SRD](docs/PRD-SRD.md)
 - [SRS](docs/SRS.md)
 - [SSD-TDD](docs/SSD-TDD.md)
-- [Plan de Pruebas](docs/Plan_Pruebas.md)
-- [Registro Forense](docs/REGISTRO_FORENSE.md) (solo si aplica)
-- [Workflows de CI/CD](docs/WORKFLOWS.md)
-- [Herramientas de seguridad](docs/HERRAMIENTAS_SEGURIDAD.md)
-- [Secrets de GitHub](docs/GITHUB_SECRETS.md)
-- [Prompts de documentación](docs/prompts/README.md)
+- [Test Plan](docs/Plan_Pruebas.md)
+- [Forensic Record](docs/REGISTRO_FORENSE.md) (if applicable)
+- [CI/CD Workflows](docs/WORKFLOWS.md)
+- [Security Tools](docs/HERRAMIENTAS_SEGURIDAD.md)
+- [GitHub Secrets](docs/GITHUB_SECRETS.md)
+- [Documentation Prompts](docs/prompts/README.md)
 
-## Licencia
-[Pendiente: definir al inicio del proyecto]
+## License
+[Pending: define at the start of the project]
