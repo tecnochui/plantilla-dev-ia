@@ -40,30 +40,60 @@ jobs:
             "scripts/README.es.md"
           )
 
-          # Archivos de documentación del repo
-          DOCS_FILES=(
-            "docs/ARQUITECTURA.md"
-            "docs/FLUJO_DE_TRABAJO.md"
-            "docs/HERRAMIENTAS.md"
-            "docs/HERRAMIENTAS_SEGURIDAD.md"
-            "docs/MODELOS_IA.md"
-            "docs/SEGURIDAD.md"
-            "docs/WORKFLOWS.md"
-            "docs/GITHUB_SECRETS.md"
-            "docs/prompts/README.md"
-            "docs/prompts/01-PRD-SRD.md"
-            "docs/prompts/02-SRS.md"
-            "docs/prompts/03-Propuesta-Tecnica.md"
-            "docs/prompts/04-SSD-TDD.md"
-            "docs/prompts/05-Mapeo-NIST-OWASP.md"
-            "docs/prompts/06-Estrategia-Respaldos.md"
-            "docs/prompts/07-Plan-Pruebas.md"
-            "docs/prompts/08-Registro-Forense.md"
+          # Documentación del repo — Español
+          DOCS_FILES_ES=(
+            "docs/es/ARQUITECTURA.md"
+            "docs/es/FLUJO_DE_TRABAJO.md"
+            "docs/es/HERRAMIENTAS.md"
+            "docs/es/HERRAMIENTAS_SEGURIDAD.md"
+            "docs/es/MODELOS_IA.md"
+            "docs/es/SEGURIDAD.md"
+            "docs/es/WORKFLOWS.md"
+            "docs/es/GITHUB_SECRETS.md"
+          )
+
+          # Documentación del repo — Inglés
+          DOCS_FILES_EN=(
+            "docs/en/ARCHITECTURE.md"
+            "docs/en/WORKFLOW.md"
+            "docs/en/TOOLS.md"
+            "docs/en/SECURITY_TOOLS.md"
+            "docs/en/AI_MODELS.md"
+            "docs/en/SECURITY.md"
+            "docs/en/WORKFLOWS.md"
+            "docs/en/GITHUB_SECRETS.md"
+          )
+
+          # Prompts — Español
+          PROMPTS_FILES_ES=(
+            "docs/es/prompts/README.md"
+            "docs/es/prompts/01-PRD-SRD.md"
+            "docs/es/prompts/02-SRS.md"
+            "docs/es/prompts/03-Propuesta-Tecnica.md"
+            "docs/es/prompts/04-SSD-TDD.md"
+            "docs/es/prompts/05-Mapeo-NIST-OWASP.md"
+            "docs/es/prompts/06-Estrategia-Respaldos.md"
+            "docs/es/prompts/07-Plan-Pruebas.md"
+            "docs/es/prompts/08-Registro-Forense.md"
+          )
+
+          # Prompts — Inglés
+          PROMPTS_FILES_EN=(
+            "docs/en/prompts/README.md"
+            "docs/en/prompts/01-PRD-SRD.md"
+            "docs/en/prompts/02-SRS.md"
+            "docs/en/prompts/03-Technical-Proposal.md"
+            "docs/en/prompts/04-SSD-TDD.md"
+            "docs/en/prompts/05-NIST-OWASP-Mapping.md"
+            "docs/en/prompts/06-Backup-Strategy.md"
+            "docs/en/prompts/07-Test-Plan.md"
+            "docs/en/prompts/08-Forensic-Record.md"
           )
 
           # Archivos del template (lo que se copia a cada proyecto nuevo)
           TEMPLATE_FILES=(
             "template/AGENTS.md"
+            "template/AGENTS.en.md"
             "template/CLAUDE.md"
             "template/GEMINI.md"
             "template/Makefile"
@@ -87,45 +117,61 @@ jobs:
             "template/.github/workflows/sca.yml"
             "template/.github/workflows/secrets.yml"
             "template/.github/workflows/dast.yml"
-            "template/docs/PRD-SRD.md"
-            "template/docs/SRS.md"
-            "template/docs/Propuesta_Tecnica.md"
-            "template/docs/SSD-TDD.md"
-            "template/docs/Mapeo_NIST_OWASP.md"
-            "template/docs/Estrategia_Respaldos.md"
-            "template/docs/Plan_Pruebas.md"
-            "template/docs/REGISTRO_FORENSE.md"
+          )
+
+          # Placeholders ES en template/docs/es/
+          TEMPLATE_DOCS_ES=(
+            "template/docs/es/PRD-SRD.md"
+            "template/docs/es/SRS.md"
+            "template/docs/es/Propuesta_Tecnica.md"
+            "template/docs/es/SSD-TDD.md"
+            "template/docs/es/Mapeo_NIST_OWASP.md"
+            "template/docs/es/Estrategia_Respaldos.md"
+            "template/docs/es/Plan_Pruebas.md"
+            "template/docs/es/REGISTRO_FORENSE.md"
+          )
+
+          # Placeholders EN en template/docs/en/
+          TEMPLATE_DOCS_EN=(
+            "template/docs/en/PRD-SRD.md"
+            "template/docs/en/SRS.md"
+            "template/docs/en/Technical_Proposal.md"
+            "template/docs/en/SSD-TDD.md"
+            "template/docs/en/NIST_OWASP_Mapping.md"
+            "template/docs/en/Backup_Strategy.md"
+            "template/docs/en/Test_Plan.md"
+            "template/docs/en/FORENSIC_RECORD.md"
+          )
+
+          # Archivos comunes del template/docs/
+          TEMPLATE_DOCS_COMMON=(
             "template/docs/deploy.yml.example"
           )
 
           MISSING=0
 
-          for file in "${ROOT_FILES[@]}"; do
-            if [ ! -f "$file" ]; then
-              echo "❌ FALTA: $file"
-              MISSING=$((MISSING + 1))
-            else
-              echo "✅ OK: $file"
-            fi
-          done
+          check_files() {
+            local label="$1"
+            shift
+            for file in "$@"; do
+              if [ ! -f "$file" ]; then
+                echo "❌ FALTA ($label): $file"
+                MISSING=$((MISSING + 1))
+              else
+                echo "✅ OK ($label): $file"
+              fi
+            done
+          }
 
-          for file in "${DOCS_FILES[@]}"; do
-            if [ ! -f "$file" ]; then
-              echo "❌ FALTA: $file"
-              MISSING=$((MISSING + 1))
-            else
-              echo "✅ OK: $file"
-            fi
-          done
-
-          for file in "${TEMPLATE_FILES[@]}"; do
-            if [ ! -f "$file" ]; then
-              echo "❌ FALTA: $file"
-              MISSING=$((MISSING + 1))
-            else
-              echo "✅ OK: $file"
-            fi
-          done
+          check_files "ROOT"        "${ROOT_FILES[@]}"
+          check_files "DOCS-ES"     "${DOCS_FILES_ES[@]}"
+          check_files "DOCS-EN"     "${DOCS_FILES_EN[@]}"
+          check_files "PROMPTS-ES"  "${PROMPTS_FILES_ES[@]}"
+          check_files "PROMPTS-EN"  "${PROMPTS_FILES_EN[@]}"
+          check_files "TEMPLATE"    "${TEMPLATE_FILES[@]}"
+          check_files "T-DOCS-ES"   "${TEMPLATE_DOCS_ES[@]}"
+          check_files "T-DOCS-EN"   "${TEMPLATE_DOCS_EN[@]}"
+          check_files "T-DOCS-COM"  "${TEMPLATE_DOCS_COMMON[@]}"
 
           if [ "$MISSING" -gt 0 ]; then
             echo ""
@@ -142,13 +188,18 @@ jobs:
 
           REQUIRED_DIRS=(
             "docs"
-            "docs/prompts"
+            "docs/es"
+            "docs/en"
+            "docs/es/prompts"
+            "docs/en/prompts"
             "scripts"
             "template"
             "template/.github"
             "template/.github/workflows"
             "template/.husky"
             "template/docs"
+            "template/docs/es"
+            "template/docs/en"
           )
 
           MISSING=0
@@ -225,7 +276,6 @@ jobs:
         run: |
           echo "🔍 Validando archivos YAML..."
 
-          # Instalar yq para validación
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
@@ -259,7 +309,6 @@ jobs:
         run: |
           echo "🔍 Validando archivos TOML..."
 
-          # Instalar taplo (validador de TOML)
           curl -fsSL https://github.com/tamasfe/taplo/releases/latest/download/taplo-linux-x86_64.gz \
             | gunzip - > /tmp/taplo
           chmod +x /tmp/taplo
@@ -330,20 +379,19 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Create test project
+      - name: Create test project (Spanish)
         run: |
-          echo "🔍 Probando creación de proyecto de prueba..."
+          echo "🔍 Probando creación de proyecto de prueba (español)..."
           chmod +x scripts/init-project.sh
-          ./scripts/init-project.sh test-project --no-git --yes
-          echo "✅ Proyecto de prueba creado."
+          ./scripts/init-project.sh test-project-es --language es --no-git --yes
+          echo "✅ Proyecto de prueba (ES) creado."
 
-      - name: Verify generated project structure
+      - name: Verify generated project structure (Spanish)
         run: |
-          echo "🔍 Verificando estructura del proyecto generado..."
+          echo "🔍 Verificando estructura del proyecto generado (ES)..."
 
-          cd test-project
+          cd test-project-es
 
-          # Archivos críticos que deben existir en el proyecto generado
           CRITICAL_FILES=(
             "AGENTS.md"
             "CLAUDE.md"
@@ -358,6 +406,7 @@ jobs:
             ".gitleaks.toml"
             ".secrets.baseline"
             ".gitignore"
+            ".project-language"
             "package.json"
             "requirements.txt"
             ".husky/pre-commit"
@@ -377,6 +426,8 @@ jobs:
             "docs/Estrategia_Respaldos.md"
             "docs/Plan_Pruebas.md"
             "docs/REGISTRO_FORENSE.md"
+            "docs/WORKFLOWS.md"
+            "docs/HERRAMIENTAS_SEGURIDAD.md"
             "docs/GITHUB_SECRETS.md"
             "docs/deploy.yml.example"
             "docs/prompts/README.md"
@@ -388,20 +439,17 @@ jobs:
             "docs/prompts/06-Estrategia-Respaldos.md"
             "docs/prompts/07-Plan-Pruebas.md"
             "docs/prompts/08-Registro-Forense.md"
-            "docs/WORKFLOWS.md"
-            "docs/HERRAMIENTAS_SEGURIDAD.md"
           )
 
           MISSING=0
 
           for file in "${CRITICAL_FILES[@]}"; do
             if [ ! -f "$file" ]; then
-              echo "❌ FALTA en proyecto generado: $file"
+              echo "❌ FALTA en proyecto ES: $file"
               MISSING=$((MISSING + 1))
             fi
           done
 
-          # Directorios
           CRITICAL_DIRS=(
             "src"
             "tests"
@@ -415,60 +463,122 @@ jobs:
 
           for dir in "${CRITICAL_DIRS[@]}"; do
             if [ ! -d "$dir" ]; then
-              echo "❌ FALTA directorio en proyecto generado: $dir"
+              echo "❌ FALTA directorio en proyecto ES: $dir"
               MISSING=$((MISSING + 1))
             fi
           done
 
           if [ "$MISSING" -gt 0 ]; then
             echo ""
-            echo "❌ Faltan $MISSING elementos en el proyecto generado."
+            echo "❌ Faltan $MISSING elementos en el proyecto ES."
+            exit 1
+          fi
+
+          # Verificar idioma
+          LANG=$(cat .project-language)
+          if [ "$LANG" != "es" ]; then
+            echo "❌ .project-language esperado 'es', encontrado '$LANG'"
             exit 1
           fi
 
           echo ""
-          echo "✅ El proyecto generado tiene la estructura correcta."
+          echo "✅ El proyecto ES tiene la estructura correcta."
 
-      - name: Verify prompts were copied
+      - name: Verify prompts were copied (Spanish)
         run: |
-          echo "🔍 Verificando prompts copiados..."
-
-          cd test-project
-          PROMPTS_COUNT=$(find docs/prompts -maxdepth 1 -type f | wc -l)
-
+          cd test-project-es
+          PROMPTS_COUNT=$(find docs/prompts -maxdepth 1 -type f -name "*.md" | wc -l)
           if [ "$PROMPTS_COUNT" -ge 9 ]; then
-            echo "✅ Prompts copiados: $PROMPTS_COUNT archivos."
+            echo "✅ Prompts ES copiados: $PROMPTS_COUNT archivos."
           else
             echo "❌ Solo $PROMPTS_COUNT archivos en docs/prompts/. Se esperaban al menos 9."
             exit 1
           fi
 
-      - name: Verify reference docs were copied
-        run: |
-          echo "🔍 Verificando docs de referencia copiados..."
-
-          cd test-project
-
-          if [ -f "docs/WORKFLOWS.md" ]; then
-            echo "✅ OK: docs/WORKFLOWS.md"
-          else
-            echo "❌ FALTA: docs/WORKFLOWS.md"
-            exit 1
-          fi
-
-          if [ -f "docs/HERRAMIENTAS_SEGURIDAD.md" ]; then
-            echo "✅ OK: docs/HERRAMIENTAS_SEGURIDAD.md"
-          else
-            echo "❌ FALTA: docs/HERRAMIENTAS_SEGURIDAD.md"
-            exit 1
-          fi
-
-      - name: Cleanup test project
+      - name: Cleanup Spanish project
         if: always()
+        run: rm -rf test-project-es
+
+      - name: Create test project (English)
         run: |
-          echo "🧹 Limpiando proyecto de prueba..."
-          rm -rf test-project
-          echo "✅ Limpieza completada."
+          echo "🔍 Probando creación de proyecto de prueba (inglés)..."
+          ./scripts/init-project.sh test-project-en --language en --no-git --yes
+          echo "✅ Proyecto de prueba (EN) creado."
+
+      - name: Verify generated project structure (English)
+        run: |
+          echo "🔍 Verificando estructura del proyecto generado (EN)..."
+
+          cd test-project-en
+
+          CRITICAL_FILES=(
+            "AGENTS.md"
+            "CLAUDE.md"
+            "GEMINI.md"
+            "Makefile"
+            "setup.sh"
+            ".project-language"
+            "docs/PRD-SRD.md"
+            "docs/SRS.md"
+            "docs/Technical_Proposal.md"
+            "docs/SSD-TDD.md"
+            "docs/NIST_OWASP_Mapping.md"
+            "docs/Backup_Strategy.md"
+            "docs/Test_Plan.md"
+            "docs/FORENSIC_RECORD.md"
+            "docs/WORKFLOWS.md"
+            "docs/SECURITY_TOOLS.md"
+            "docs/GITHUB_SECRETS.md"
+            "docs/prompts/README.md"
+            "docs/prompts/01-PRD-SRD.md"
+            "docs/prompts/02-SRS.md"
+            "docs/prompts/03-Technical-Proposal.md"
+            "docs/prompts/04-SSD-TDD.md"
+            "docs/prompts/05-NIST-OWASP-Mapping.md"
+            "docs/prompts/06-Backup-Strategy.md"
+            "docs/prompts/07-Test-Plan.md"
+            "docs/prompts/08-Forensic-Record.md"
+          )
+
+          MISSING=0
+
+          for file in "${CRITICAL_FILES[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ FALTA en proyecto EN: $file"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ "$MISSING" -gt 0 ]; then
+            echo ""
+            echo "❌ Faltan $MISSING elementos en el proyecto EN."
+            exit 1
+          fi
+
+          # Verificar idioma
+          LANG=$(cat .project-language)
+          if [ "$LANG" != "en" ]; then
+            echo "❌ .project-language esperado 'en', encontrado '$LANG'"
+            exit 1
+          fi
+
+          echo ""
+          echo "✅ El proyecto EN tiene la estructura correcta."
+
+      - name: Verify prompts were copied (English)
+        run: |
+          cd test-project-en
+          PROMPTS_COUNT=$(find docs/prompts -maxdepth 1 -type f -name "*.md" | wc -l)
+          if [ "$PROMPTS_COUNT" -ge 9 ]; then
+            echo "✅ Prompts EN copiados: $PROMPTS_COUNT archivos."
+          else
+            echo "❌ Solo $PROMPTS_COUNT archivos en docs/prompts/. Se esperaban al menos 9."
+            exit 1
+          fi
+
+      - name: Cleanup English project
+        if: always()
+        run: rm -rf test-project-en
 
   # ──────────────────────────────────────────────
   # 5. Markdown Lint (opcional, informativo)
