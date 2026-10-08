@@ -1,8 +1,10 @@
 # Estrategia de Respaldos y Retención de Logs
 
+🌍 **Lee esto en:** [Español](Estrategia_Respaldos.md) | [English](../en/Backup_Strategy.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 6 (`docs/prompts/06-Estrategia-Respaldos.md`) con DeepSeek web.
-> **Depende de:** `docs/SSD-TDD.md`
+> **Instrucciones:** Usar el Prompt 6 (`docs/es/prompts/06-Estrategia-Respaldos.md`) con DeepSeek web.
+> **Depende de:** `docs/es/SSD-TDD.md`
 
 ---
 

@@ -14,13 +14,6 @@ Antes de cualquier tarea, lee estos archivos en orden:
 Si `docs/REGISTRO_FORENSE.md` existe, LÉELO COMPLETO antes de modificar cualquier archivo.
 Si descubres algo nuevo sobre el sistema, actualiza ese archivo con fecha y hallazgo.
 
-## Prompts de documentación
-Los prompts para regenerar cada documento están en `docs/prompts/`:
-- `README.md` — índice y guía de uso
-- `01-PRD-SRD.md` a `08-Registro-Forense.md` — prompts individuales
-
-Si necesitas regenerar un documento, usa el prompt correspondiente.
-
 ## Comandos esenciales
 ### Vía Makefile (recomendado)
 - `make help` → muestra todas las tareas disponibles
@@ -109,5 +102,6 @@ Los prompts para generar cada documento están en `docs/prompts/`.
 - `05-Mapeo-NIST-OWASP.md` — Prompt 5
 - `06-Estrategia-Respaldos.md` — Prompt 6
 - `07-Plan-Pruebas.md` — Prompt 7
+- `08-Registro-Forense.md` — Prompt 8
 
 Si necesitas regenerar un documento, usa el prompt correspondiente con el modelo recomendado en el README.

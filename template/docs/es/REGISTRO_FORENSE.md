@@ -1,5 +1,7 @@
 # Registro Forense — [NOMBRE DEL SISTEMA]
 
+🌍 **Lee esto en:** [Español](REGISTRO_FORENSE.md) | [English](../en/FORENSIC_RECORD.md)
+
 > **Propósito:** Este documento registra lo que la IA descubrió al analizar un sistema sin documentación.
 > NO es documentación oficial; es el resultado de ingeniería inversa.
 > Si algo aquí es incorrecto, corrígelo en una nueva sesión de análisis y actualiza este archivo.

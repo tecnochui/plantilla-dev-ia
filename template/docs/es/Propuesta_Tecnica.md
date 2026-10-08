@@ -1,9 +1,11 @@
 # Propuesta Técnica
 
+🌍 **Lee esto en:** [Español](Propuesta_Tecnica.md) | [English](../en/Technical_Proposal.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 3 (`docs/prompts/03-Propuesta-Tecnica.md`) con DeepSeek web o Gemini web.
-> **Depende de:** `docs/SRS.md`
-> **Alimenta a:** `docs/SSD-TDD.md`
+> **Instrucciones:** Usar el Prompt 3 (`docs/es/prompts/03-Propuesta-Tecnica.md`) con DeepSeek web o Gemini web.
+> **Depende de:** `docs/es/SRS.md`
+> **Alimenta a:** `docs/es/SSD-TDD.md`
 
 ---
 

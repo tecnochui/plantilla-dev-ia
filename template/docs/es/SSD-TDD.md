@@ -1,9 +1,11 @@
 # SSD-TDD — Software Design Document + Technical Design Document
 
+🌍 **Lee esto en:** [Español](SSD-TDD.md) | [English](../en/SSD-TDD.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 4 (`docs/prompts/04-SSD-TDD.md`) con DeepSeek web.
-> **Depende de:** `docs/SRS.md` + `docs/Propuesta_Tecnica.md`
-> **Alimenta a:** `docs/Mapeo_NIST_OWASP.md`, `docs/Estrategia_Respaldos.md`, `docs/Plan_Pruebas.md`
+> **Instrucciones:** Usar el Prompt 4 (`docs/es/prompts/04-SSD-TDD.md`) con DeepSeek web.
+> **Depende de:** `docs/es/SRS.md` + `docs/es/Propuesta_Tecnica.md`
+> **Alimenta a:** `docs/es/Mapeo_NIST_OWASP.md`, `docs/es/Estrategia_Respaldos.md`, `docs/es/Plan_Pruebas.md`
 
 ---
 
@@ -127,7 +129,7 @@ sequenceDiagram
 
 ## 6. Estrategia de testing (resumen)
 
-> **Nota:** Esta sección es un **resumen**. El detalle completo está en `docs/Plan_Pruebas.md`. Si hay discrepancia, `Plan_Pruebas.md` tiene prioridad.
+> **Nota:** Esta sección es un **resumen**. El detalle completo está en `docs/es/Plan_Pruebas.md`. Si hay discrepancia, `Plan_Pruebas.md` tiene prioridad.
 
 - **Unitarias:** [% objetivo] — [Herramienta]
 - **Integración:** [% objetivo] — [Herramienta]

@@ -1,8 +1,10 @@
 # Mapeo NIST SSDF + OWASP Top 10:2025
 
+🌍 **Lee esto en:** [Español](Mapeo_NIST_OWASP.md) | [English](../en/NIST_OWASP_Mapping.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 5 (`docs/prompts/05-Mapeo-NIST-OWASP.md`) con DeepSeek web o Claude web.
-> **Depende de:** `docs/SSD-TDD.md` + `docs/SRS.md`
+> **Instrucciones:** Usar el Prompt 5 (`docs/es/prompts/05-Mapeo-NIST-OWASP.md`) con DeepSeek web o Claude web.
+> **Depende de:** `docs/es/SSD-TDD.md` + `docs/es/SRS.md`
 
 ---
 

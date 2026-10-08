@@ -1,9 +1,11 @@
 # SRS — Software Requirements Specification
 
+🌍 **Lee esto en:** [Español](SRS.md) | [English](../en/SRS.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 2 (`docs/prompts/02-SRS.md`) con DeepSeek web.
-> **Depende de:** `docs/PRD-SRD.md`
-> **Alimenta a:** `docs/Propuesta_Tecnica.md`, `docs/Plan_Pruebas.md`
+> **Instrucciones:** Usar el Prompt 2 (`docs/es/prompts/02-SRS.md`) con DeepSeek web.
+> **Depende de:** `docs/es/PRD-SRD.md`
+> **Alimenta a:** `docs/es/Propuesta_Tecnica.md`, `docs/es/Plan_Pruebas.md`
 > **Estándar:** IEEE 830 / ISO 29148
 
 ---
@@ -23,7 +25,7 @@
 | [Término] | [Definición] |
 
 ### 1.4. Referencias
-- `docs/PRD-SRD.md`
+- `docs/es/PRD-SRD.md`
 - [Otros documentos de referencia]
 
 ## 2. Descripción general

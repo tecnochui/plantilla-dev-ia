@@ -1,8 +1,10 @@
 # Plan de Pruebas
 
+🌍 **Lee esto en:** [Español](Plan_Pruebas.md) | [English](../en/Test_Plan.md)
+
 > **Estado:** Pendiente de redacción.
-> **Instrucciones:** Usar el Prompt 7 (`docs/prompts/07-Plan-Pruebas.md`) con DeepSeek web o Gemini web.
-> **Depende de:** `docs/SSD-TDD.md` (sección 6) + `docs/SRS.md`
+> **Instrucciones:** Usar el Prompt 7 (`docs/es/prompts/07-Plan-Pruebas.md`) con DeepSeek web o Gemini web.
+> **Depende de:** `docs/es/SSD-TDD.md` (sección 6) + `docs/es/SRS.md`
 > **Nota:** La sección 6 del `SSD-TDD.md` es un **resumen**. Este documento es el **detalle completo**. Si hay discrepancia, este documento tiene prioridad.
 
 ---
