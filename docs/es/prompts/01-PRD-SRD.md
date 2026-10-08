@@ -1,5 +1,7 @@
 # Prompt 1 — PRD-SRD (Documento de Requisitos del Producto y Software)
 
+🌍 **Lee esto en:** [Español](01-PRD-SRD.md) | [English](../en/01-PRD-SRD.md)
+
 ## Propósito
 Definir **qué** se va a construir y **para quién**, antes de decidir **cómo**.
 

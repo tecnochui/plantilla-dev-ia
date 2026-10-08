@@ -1,5 +1,7 @@
 # Prompt 6 — Estrategia de Respaldos y Retención de Logs
 
+🌍 **Lee esto en:** [Español](06-Estrategia-Respaldos.md) | [English](../en/06-Backup-Strategy.md)
+
 ## Propósito
 Definir cómo se respaldan los activos del proyecto y cuánto tiempo se retienen los logs.
 
@@ -88,6 +90,16 @@ Reglas:
 - [ ] El procedimiento de restauración es paso a paso.
 - [ ] Los scripts de respaldo son ejecutables (bash válido).
 - [ ] La retención de logs de seguridad es ≥ 90 días.
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Respaldos no restaurables | Pedir "el procedimiento de restauración debe ser paso a paso y verificable" |
+| Falta la regla 3-2-1 | Pedir "aplica la regla 3-2-1 con destinos concretos para cada activo" |
+| Retención de logs insuficiente | Pedir "los logs de seguridad deben retenerse mínimo 90 días" |
+| Scripts no ejecutables | Pedir "valida la sintaxis bash de cada script y usa rutas absolutas" |
+| Sin verificación de restauración | Pedir "incluye un plan de pruebas de restauración con frecuencia definida" |
 
 ## Guardar como
 `docs/Estrategia_Respaldos.md`

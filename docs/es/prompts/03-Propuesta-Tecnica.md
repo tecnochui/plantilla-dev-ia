@@ -1,5 +1,7 @@
 # Prompt 3 — Propuesta Técnica
 
+🌍 **Lee esto en:** [Español](03-Propuesta-Tecnica.md) | [English](../en/03-Technical-Proposal.md)
+
 ## Propósito
 Decidir **cómo** se construirá el sistema: stack, arquitectura de alto nivel, estrategia de licenciamiento.
 
@@ -21,7 +23,7 @@ Con base en el SRS adjunto, genera la Propuesta Técnica para este proyecto.
 
 Antes de empezar, hazme estas preguntas:
 
-1. ¿El sistema será 100% free/open source, 100% privativo, o un modelo community + versión paga?
+1. ¿El sistema será 100% free/open source, 100% privativo, o un modelo open-core (edición community gratuita + edición enterprise de paga)?
 2. ¿Tienes preferencia por algún lenguaje o framework? (si no, recomienda)
 3. ¿El sistema debe correr en algún entorno específico? (Linux, Windows, web, contenedores)
 4. ¿Hay restricciones de presupuesto para infraestructura? (ej. $0, $10/mes)
@@ -75,6 +77,16 @@ Reglas:
 - [ ] La estrategia de licenciamiento es coherente con el modelo elegido.
 - [ ] Las dependencias recomendadas no tienen conflictos de licencia.
 - [ ] Los riesgos técnicos tienen mitigación concreta.
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Stack sin justificación | Pedir "compara cada tecnología con 2 alternativas y explica el trade-off" |
+| Falta el diagrama Mermaid | Pedir "genera el diagrama Mermaid de arquitectura de alto nivel" |
+| Ignora mis respuestas a las preguntas | Corregir con "usa las respuestas que te di, no asumas" |
+| Licencias incompatibles | Pedir "revisa compatibilidad de cada dependencia con la licencia elegida" |
+| Riesgos sin mitigación | Pedir "cada riesgo debe tener una mitigación concreta y accionable" |
 
 ## Guardar como
 `docs/Propuesta_Tecnica.md`

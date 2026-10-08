@@ -1,5 +1,7 @@
 # Prompts de Documentación
 
+🌍 **Lee esto en:** [Español](README.md) | [English](../en/README.md)
+
 > Guía de uso de los prompts para generar la documentación fundacional del proyecto.
 > Cada prompt genera **un solo documento**. Se validan secuencialmente antes de avanzar.
 
@@ -102,7 +104,8 @@ docs/
     ├── 04-SSD-TDD.md
     ├── 05-Mapeo-NIST-OWASP.md
     ├── 06-Estrategia-Respaldos.md
-    └── 07-Plan-Pruebas.md
+    ├── 07-Plan-Pruebas.md
+    └── 08-Registro-Forense.md
 ```
 
 ---

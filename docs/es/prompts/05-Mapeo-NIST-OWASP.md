@@ -1,5 +1,7 @@
 # Prompt 5 — Mapeo NIST SSDF + OWASP Top 10:2025
 
+🌍 **Lee esto en:** [Español](05-Mapeo-NIST-OWASP.md) | [English](../en/05-NIST-OWASP-Mapping.md)
+
 ## Propósito
 Documentar cómo el proyecto cumple con prácticas de seguridad reconocidas.
 
@@ -59,7 +61,7 @@ Secciones requeridas:
    - A07: Authentication Failures
    - A08: Software or Data Integrity Failures
    - A09: Security Logging & Alerting Failures
-   - A10: SSRF
+   - A10: Mishandling of Exceptional Conditions
 
 3. Herramientas de seguridad del proyecto
    Tabla con: herramienta, tipo (SAST/SCA/DAST), workflow de CI, umbral de bloqueo.
@@ -87,6 +89,16 @@ Reglas:
 - [ ] Las 10 categorías OWASP están cubiertas (aplican o no, con razón).
 - [ ] La matriz de trazabilidad conecta SRS → NIST → OWASP → prueba.
 - [ ] Las herramientas coinciden con las del Plan de Pruebas.
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Inventa cumplimiento que no existe | Corregir con "sé honesto: si algo no se implementa, dilo y justifica" |
+| Falta alguna práctica NIST | Pedir "cubre las 9 prácticas NIST listadas, aunque sea para marcarlas como no aplicables" |
+| Falta alguna categoría OWASP | Pedir "cubre las 10 categorías, con Sí/No y razón en cada una" |
+| La matriz de trazabilidad está incompleta | Pedir "conecta cada requisito de seguridad del SRS con NIST, OWASP y prueba" |
+| Herramientas no coinciden con el Plan de Pruebas | Corregir con "usa exactamente las herramientas del Plan de Pruebas" |
 
 ## Guardar como
 `docs/Mapeo_NIST_OWASP.md`

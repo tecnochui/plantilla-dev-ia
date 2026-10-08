@@ -1,5 +1,7 @@
 # Prompt 4 — SSD-TDD (Software Design Document + Technical Design Document)
 
+🌍 **Lee esto en:** [Español](04-SSD-TDD.md) | [English](../en/04-SSD-TDD.md)
+
 ## Propósito
 Diseño detallado: arquitectura de módulos, esquema de BD, contratos de API, decisiones de seguridad.
 
@@ -80,6 +82,16 @@ Reglas:
 - [ ] La sección de seguridad cubre los 10 puntos del OWASP Top 10:2025.
 - [ ] Los diagramas Mermaid son válidos (renderizan sin errores).
 - [ ] La sección 6 referencia a `Plan_Pruebas.md` (no duplica).
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Diagramas Mermaid no renderizan | Pedir "valida la sintaxis Mermaid y corrige los errores" |
+| Faltan entidades del SRS | Pedir "revisa el SRS y añade todas las entidades faltantes al ER" |
+| Contratos de API incompletos | Pedir "cada endpoint debe tener request body y response body de ejemplo" |
+| Seguridad superficial | Pedir "cubre los 10 puntos del OWASP Top 10:2025 con decisión concreta" |
+| Duplica el Plan de Pruebas | Corregir con "en la sección 6 solo resume y referencia, no dupliques" |
 
 ## Guardar como
 `docs/SSD-TDD.md`

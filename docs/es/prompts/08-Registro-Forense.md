@@ -1,5 +1,7 @@
 # Prompt 8 — Registro Forense (Ingeniería Inversa)
 
+🌍 **Lee esto en:** [Español](08-Registro-Forense.md) | [English](../en/08-Forensic-Record.md)
+
 ## Propósito
 Generar `docs/REGISTRO_FORENSE.md` a partir del análisis de un sistema sin documentación (propio o de terceros).
 
@@ -110,6 +112,16 @@ Formato de salida: Markdown siguiendo la plantilla de docs/REGISTRO_FORENSE.md.
    - Se completa un pendiente → marcarlo como completado.
    - Se encuentra un nuevo hallazgo → añadirlo con fecha.
    - Se modifica un módulo → actualizar su entrada en el inventario.
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Inventa cosas que no puede verificar | Corregir con "si no entiendes algo, márcalo como zona oscura, no inventes" |
+| No usa diagramas Mermaid | Pedir "genera el flowchart del flujo de datos y el erDiagram de la BD" |
+| Faltan zonas oscuras | Pedir "lista explícitamente todo lo que no pudiste entender y qué se necesita para entenderlo" |
+| Hallazgos de seguridad sin severidad | Pedir "clasifica cada hallazgo por severidad (Alta/Media/Baja) y sugiere acción" |
+| No incluye instrucciones para futuras sesiones | Pedir "añade la sección de instrucciones para que otra sesión de IA continúe el análisis" |
 
 ## Iteración
 

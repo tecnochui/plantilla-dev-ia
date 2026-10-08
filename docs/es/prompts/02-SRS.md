@@ -1,5 +1,7 @@
 # Prompt 2 — SRS (Software Requirements Specification)
 
+🌍 **Lee esto en:** [Español](02-SRS.md) | [English](../en/02-SRS.md)
+
 ## Propósito
 Detallar los requisitos funcionales y no funcionales del sistema, con trazabilidad al PRD-SRD.
 
@@ -79,6 +81,16 @@ Reglas:
 - [ ] La matriz de trazabilidad cubre todas las historias de usuario del PRD-SRD.
 - [ ] Los requisitos están priorizados (Alta/Media/Baja).
 - [ ] Las interfaces externas listan protocolos concretos (REST, gRPC, WebSocket).
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Requisitos genéricos | Añadir más contexto al PRD-SRD y regenerar |
+| Requisitos no medibles | Pedir "cada requisito debe tener una métrica verificable" |
+| Falta la matriz de trazabilidad | Pedir "genera la matriz completa PRD-SRD → SRS" |
+| No hay priorización | Pedir "asigna prioridad Alta/Media/Baja a cada RF" |
+| Contradice el PRD-SRD | Regenerar la sección conflictiva |
 
 ## Guardar como
 `docs/SRS.md`

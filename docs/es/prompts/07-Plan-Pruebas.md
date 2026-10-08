@@ -1,5 +1,7 @@
 # Prompt 7 — Plan de Pruebas
 
+🌍 **Lee esto en:** [Español](07-Plan-Pruebas.md) | [English](../en/07-Test-Plan.md)
+
 ## Propósito
 Definir la estrategia de testing completa: unitarias, integración, E2E, seguridad.
 
@@ -231,6 +233,16 @@ Define los términos técnicos usados en este documento:
 - [ ] Los workflows de GitHub Actions coinciden con los del repo.
 - [ ] El OWASP Top 10:2025 está completo (las 10 categorías, con A10 = Mishandling of Exceptional Conditions).
 - [ ] El mapeo NIST SSDF es honesto sobre lo que no aplica.
+
+## Qué hacer si la salida no cumple
+
+| Problema | Acción |
+|----------|--------|
+| Mezcla herramientas de stacks distintos | Corregir con "alinea con el stack real del proyecto, no mezcles Python y Node" |
+| Umbrales de cobertura poco realistas | Pedir "usa 80% global y 50% patch, o justifica otro umbral" |
+| OWASP Top 10:2025 incompleto | Pedir "cubre las 10 categorías, con A10 = Mishandling of Exceptional Conditions" |
+| Mapeo NIST SSDF deshonesto | Corregir con "documenta explícitamente qué prácticas no aplican y por qué" |
+| Workflows que no existen en el repo | Pedir "usa solo los workflows que existan realmente en .github/workflows/" |
 
 ## Guardar como
 `docs/Plan_Pruebas.md`
