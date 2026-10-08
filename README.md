@@ -43,14 +43,35 @@ cd plantilla-dev-ia
 # 3. Full script documentation
 cat scripts/README.md
 
-# 4. Create a new project
+# 4. Create a new project (Spanish by default)
 ./scripts/init-project.sh my-new-project
 
-# 5. With additional options
-./scripts/init-project.sh my-new-project --path ~/projects --private
+# 5. Create an English project
+./scripts/init-project.sh my-new-project --language en
+
+# 6. Create a bilingual project (English + Spanish docs)
+./scripts/init-project.sh my-new-project --language en --with-other-language
+
+# 7. With additional options
+./scripts/init-project.sh my-new-project --language es --path ~/projects --private
 ```
 
 **Note:** This repo is a **tool**, not a project template. Do not use GitHub's "Use this template" button directly, because it would copy the structure of the template repo (with `docs/`, `scripts/`, `template/`), not the structure of a new project.
+
+---
+
+## 🌍 Bilingual support
+
+This template is fully bilingual (Spanish + English):
+
+- **Reference docs** live in `docs/es/` and `docs/en/`
+- **Prompts** live in `docs/es/prompts/` and `docs/en/prompts/`
+- **Placeholders** live in `template/docs/es/` and `template/docs/en/`
+
+Each generated project:
+- Stores its language in `.project-language`
+- Gets the docs of its chosen language in `docs/`
+- Can add the other language later with `./setup.sh --add-language <es|en>`
 
 ---
 
@@ -68,13 +89,13 @@ The workflow follows **7 sequential phases**. Each phase produces a document tha
 ┌─────────────────────────────────────────────────────────────────┐
 │   PHASE 1: FOUNDATIONAL DOCUMENTATION (sequential)              │
 │                                                                  │
-│   1. PRD-SRD           → What are we building and for whom?     │
-│   2. SRS               → Functional and non-functional reqs     │
+│   1. PRD-SRD            → What are we building and for whom?    │
+│   2. SRS                → Functional and non-functional reqs    │
 │   3. Technical Proposal → Stack, architecture, licensing        │
-│   4. SSD-TDD           → Detailed design (arch, DB, API)        │
+│   4. SSD-TDD            → Detailed design (arch, DB, API)       │
 │   5. NIST+OWASP Mapping → Security compliance                   │
-│   6. Backup Strategy   → Backups and log retention              │
-│   7. Test Plan         → Complete testing strategy              │
+│   6. Backup Strategy    → Backups and log retention             │
+│   7. Test Plan          → Complete testing strategy             │
 │                                                                  │
 │   Each document is approved before moving to the next one.      │
 └─────────────────────────────────────────────────────────────────┘
@@ -101,21 +122,21 @@ The workflow follows **7 sequential phases**. Each phase produces a document tha
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-**Note:** There is an **8th prompt** (`08-Registro-Forense.md`) that is not used at the start. It is used **after** code exists, to perform reverse engineering on an undocumented system.
+**Note:** There is an **8th prompt** (`08-Forensic-Record.md`) that is not used at the start. It is used **after** code exists, to perform reverse engineering on an undocumented system.
 
 ### 📖 Detailed workflow documentation
 
 | Document | Description |
 |----------|-------------|
-| [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) | Philosophy and design decisions behind the workflow |
-| [`docs/FLUJO_DE_TRABAJO.md`](docs/FLUJO_DE_TRABAJO.md) | Complete end-to-end process diagram |
-| [`docs/HERRAMIENTAS.md`](docs/HERRAMIENTAS.md) | Tool stack and why each was chosen |
-| [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/HERRAMIENTAS_SEGURIDAD.md) | Installation and usage of Semgrep, Trivy, Gitleaks, git-cliff |
-| [`docs/MODELOS_IA.md`](docs/MODELOS_IA.md) | AI model guide, costs, and when to use each one |
-| [`docs/SEGURIDAD.md`](docs/SEGURIDAD.md) | Alignment with NIST SSDF and OWASP Top 10:2025 |
-| [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md) | Documentation for the 7 GitHub Actions workflows |
-| [`docs/GITHUB_SECRETS.md`](docs/GITHUB_SECRETS.md) | Required GitHub secrets |
-| [`docs/prompts/README.md`](docs/prompts/README.md) | Master index of the 8 sequential prompts |
+| [`docs/en/ARCHITECTURE.md`](docs/en/ARCHITECTURE.md) | Philosophy and design decisions behind the workflow |
+| [`docs/en/WORKFLOW.md`](docs/en/WORKFLOW.md) | Complete end-to-end process diagram |
+| [`docs/en/TOOLS.md`](docs/en/TOOLS.md) | Tool stack and why each was chosen |
+| [`docs/en/SECURITY_TOOLS.md`](docs/en/SECURITY_TOOLS.md) | Installation and usage of Semgrep, Trivy, Gitleaks, git-cliff |
+| [`docs/en/AI_MODELS.md`](docs/en/AI_MODELS.md) | AI model guide, costs, and when to use each one |
+| [`docs/en/SECURITY.md`](docs/en/SECURITY.md) | Alignment with NIST SSDF and OWASP Top 10:2025 |
+| [`docs/en/WORKFLOWS.md`](docs/en/WORKFLOWS.md) | Documentation for the 7 GitHub Actions workflows |
+| [`docs/en/GITHUB_SECRETS.md`](docs/en/GITHUB_SECRETS.md) | Required GitHub secrets |
+| [`docs/en/prompts/README.md`](docs/en/prompts/README.md) | Master index of the 8 sequential prompts |
 | [`scripts/README.md`](scripts/README.md) | Documentation for `init-project.sh` and `setup.sh` |
 
 ---
@@ -126,14 +147,14 @@ The workflow follows **7 sequential phases**. Each phase produces a document tha
 
 | # | Document | Purpose | Prompt |
 |---|----------|---------|--------|
-| 1 | **PRD-SRD** | What is built and for whom | [`01-PRD-SRD.md`](docs/prompts/01-PRD-SRD.md) |
-| 2 | **SRS** | Functional and non-functional requirements | [`02-SRS.md`](docs/prompts/02-SRS.md) |
-| 3 | **Technical Proposal** | Stack, architecture, licensing | [`03-Propuesta-Tecnica.md`](docs/prompts/03-Propuesta-Tecnica.md) |
-| 4 | **SSD-TDD** | Detailed design: architecture, DB, API | [`04-SSD-TDD.md`](docs/prompts/04-SSD-TDD.md) |
-| 5 | **NIST+OWASP Mapping** | Security compliance | [`05-Mapeo-NIST-OWASP.md`](docs/prompts/05-Mapeo-NIST-OWASP.md) |
-| 6 | **Backup Strategy** | Backups and log retention | [`06-Estrategia-Respaldos.md`](docs/prompts/06-Estrategia-Respaldos.md) |
-| 7 | **Test Plan** | Complete testing strategy | [`07-Plan-Pruebas.md`](docs/prompts/07-Plan-Pruebas.md) |
-| 8 | **Forensic Record** | Reverse engineering of undocumented systems | [`08-Registro-Forense.md`](docs/prompts/08-Registro-Forense.md) |
+| 1 | **PRD-SRD** | What is built and for whom | [`01-PRD-SRD.md`](docs/en/prompts/01-PRD-SRD.md) |
+| 2 | **SRS** | Functional and non-functional requirements | [`02-SRS.md`](docs/en/prompts/02-SRS.md) |
+| 3 | **Technical Proposal** | Stack, architecture, licensing | [`03-Technical-Proposal.md`](docs/en/prompts/03-Technical-Proposal.md) |
+| 4 | **SSD-TDD** | Detailed design: architecture, DB, API | [`04-SSD-TDD.md`](docs/en/prompts/04-SSD-TDD.md) |
+| 5 | **NIST+OWASP Mapping** | Security compliance | [`05-NIST-OWASP-Mapping.md`](docs/en/prompts/05-NIST-OWASP-Mapping.md) |
+| 6 | **Backup Strategy** | Backups and log retention | [`06-Backup-Strategy.md`](docs/en/prompts/06-Backup-Strategy.md) |
+| 7 | **Test Plan** | Complete testing strategy | [`07-Test-Plan.md`](docs/en/prompts/07-Test-Plan.md) |
+| 8 | **Forensic Record** | Reverse engineering of undocumented systems | [`08-Forensic-Record.md`](docs/en/prompts/08-Forensic-Record.md) |
 
 ### Configuration files
 
@@ -213,7 +234,7 @@ This workflow is designed to work with **free models via web** and **low-cost mo
 
 **Estimated budget:** $10-20 USD/month with disciplined usage. 80-90% of operations are done with DeepSeek V4 Flash, the cheapest model on OpenRouter in 2026.
 
-📖 **Full model guide:** [`docs/MODELOS_IA.md`](docs/MODELOS_IA.md)
+📖 **Full model guide:** [`docs/en/AI_MODELS.md`](docs/en/AI_MODELS.md)
 
 ---
 
@@ -250,13 +271,13 @@ The 10 categories are covered in the Test Plan and the NIST+OWASP Mapping:
 9. Security Logging & Alerting Failures
 10. **Mishandling of Exceptional Conditions**
 
-📖 **Full security guide:** [`docs/SEGURIDAD.md`](docs/SEGURIDAD.md)
+📖 **Full security guide:** [`docs/en/SECURITY.md`](docs/en/SECURITY.md)
 
 ---
 
 ## 📁 Structure of a new project
 
-When you use `init-project.sh`, each new project will have this structure:
+When you use `init-project.sh`, each new project will have this structure (English example):
 
 ```
 my-project/
@@ -265,21 +286,22 @@ my-project/
 ├── docs/
 │   ├── PRD-SRD.md
 │   ├── SRS.md
-│   ├── Propuesta_Tecnica.md
+│   ├── Technical_Proposal.md
 │   ├── SSD-TDD.md
-│   ├── Mapeo_NIST_OWASP.md
-│   ├── Estrategia_Respaldos.md
-│   ├── Plan_Pruebas.md
-│   ├── REGISTRO_FORENSE.md
+│   ├── NIST_OWASP_Mapping.md
+│   ├── Backup_Strategy.md
+│   ├── Test_Plan.md
+│   ├── FORENSIC_RECORD.md
 │   ├── GITHUB_SECRETS.md
 │   ├── WORKFLOWS.md
-│   ├── HERRAMIENTAS_SEGURIDAD.md
+│   ├── SECURITY_TOOLS.md
 │   ├── deploy.yml.example
 │   └── prompts/            (9 files: README + 8 prompts)
 ├── src/
 ├── tests/
 ├── scripts/
 ├── config/
+├── .project-language
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── GEMINI.md
@@ -298,6 +320,8 @@ my-project/
 ├── requirements.txt
 └── setup.sh
 ```
+
+**Note:** If you create the project with `--language es`, the docs will use Spanish filenames (`Propuesta_Tecnica.md`, `Mapeo_NIST_OWASP.md`, etc.).
 
 ---
 
@@ -330,7 +354,7 @@ my-project/
 | Gitleaks | Binary from GitHub Releases |
 | git-cliff | Binary from GitHub Releases |
 
-📖 **Detailed installation guide:** [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/HERRAMIENTAS_SEGURIDAD.md)
+📖 **Detailed installation guide:** [`docs/en/SECURITY_TOOLS.md`](docs/en/SECURITY_TOOLS.md)
 
 ---
 
@@ -405,8 +429,8 @@ This project is licensed under the **MIT License**. You can use, modify, and dis
 If you have questions or find problems:
 
 - Open an **Issue** in this repository.
-- Check the documentation in [`docs/`](docs/).
-- See [`docs/prompts/README.md`](docs/prompts/README.md) for questions about the prompts.
+- Check the documentation in [`docs/en/`](docs/en/).
+- See [`docs/en/prompts/README.md`](docs/en/prompts/README.md) for questions about the prompts.
 
 ---
 
