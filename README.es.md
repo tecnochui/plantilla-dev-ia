@@ -43,14 +43,35 @@ cd plantilla-dev-ia
 # 3. Documentación completa del script
 cat scripts/README.md
 
-# 4. Crear un proyecto nuevo
+# 4. Crear un proyecto nuevo (español por defecto)
 ./scripts/init-project.sh mi-nuevo-proyecto
 
-# 5. Con opciones adicionales
-./scripts/init-project.sh mi-nuevo-proyecto --path ~/proyectos --private
+# 5. Crear un proyecto en inglés
+./scripts/init-project.sh mi-nuevo-proyecto --language en
+
+# 6. Crear un proyecto bilingüe (inglés + docs en español)
+./scripts/init-project.sh mi-nuevo-proyecto --language en --with-other-language
+
+# 7. Con opciones adicionales
+./scripts/init-project.sh mi-nuevo-proyecto --language es --path ~/proyectos --private
 ```
 
 **Nota:** Este repo es una **herramienta**, no una plantilla de proyecto. No se debe usar "Use this template" de GitHub directamente, porque copiaría la estructura del repo plantilla (con `docs/`, `scripts/`, `template/`), no la estructura de un proyecto nuevo.
+
+---
+
+## 🌍 Soporte bilingüe
+
+Esta plantilla es totalmente bilingüe (español + inglés):
+
+- **Docs de referencia** viven en `docs/es/` y `docs/en/`
+- **Prompts** viven en `docs/es/prompts/` y `docs/en/prompts/`
+- **Placeholders** viven en `template/docs/es/` y `template/docs/en/`
+
+Cada proyecto generado:
+- Guarda su idioma en `.project-language`
+- Recibe los docs del idioma elegido en `docs/`
+- Puede añadir el otro idioma después con `./setup.sh --add-language <es|en>`
 
 ---
 
@@ -107,15 +128,15 @@ El flujo de trabajo sigue **7 fases secuenciales**. Cada fase produce un documen
 
 | Documento | Descripción |
 |-----------|-------------|
-| [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) | Filosofía y decisiones de diseño del flujo |
-| [`docs/FLUJO_DE_TRABAJO.md`](docs/FLUJO_DE_TRABAJO.md) | Diagrama completo del proceso end-to-end |
-| [`docs/HERRAMIENTAS.md`](docs/HERRAMIENTAS.md) | Stack de herramientas y por qué se eligió cada una |
-| [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/HERRAMIENTAS_SEGURIDAD.md) | Instalación y uso de Semgrep, Trivy, Gitleaks, git-cliff |
-| [`docs/MODELOS_IA.md`](docs/MODELOS_IA.md) | Guía de modelos de IA, costos y cuándo usar cada uno |
-| [`docs/SEGURIDAD.md`](docs/SEGURIDAD.md) | Alineación con NIST SSDF y OWASP Top 10:2025 |
-| [`docs/WORKFLOWS.md`](docs/WORKFLOWS.md) | Documentación de los 7 workflows de GitHub Actions |
-| [`docs/GITHUB_SECRETS.md`](docs/GITHUB_SECRETS.md) | Secrets necesarios en GitHub |
-| [`docs/prompts/README.md`](docs/prompts/README.md) | Índice maestro de los 8 prompts secuenciales |
+| [`docs/ARQUITECTURA.md`](docs/es/ARQUITECTURA.md) | Filosofía y decisiones de diseño del flujo |
+| [`docs/FLUJO_DE_TRABAJO.md`](docs/es/FLUJO_DE_TRABAJO.md) | Diagrama completo del proceso end-to-end |
+| [`docs/HERRAMIENTAS.md`](docs/es/HERRAMIENTAS.md) | Stack de herramientas y por qué se eligió cada una |
+| [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/es/HERRAMIENTAS_SEGURIDAD.md) | Instalación y uso de Semgrep, Trivy, Gitleaks, git-cliff |
+| [`docs/MODELOS_IA.md`](docs/es/MODELOS_IA.md) | Guía de modelos de IA, costos y cuándo usar cada uno |
+| [`docs/SEGURIDAD.md`](docs/es/SEGURIDAD.md) | Alineación con NIST SSDF y OWASP Top 10:2025 |
+| [`docs/WORKFLOWS.md`](docs/es/WORKFLOWS.md) | Documentación de los 7 workflows de GitHub Actions |
+| [`docs/GITHUB_SECRETS.md`](docs/es/GITHUB_SECRETS.md) | Secrets necesarios en GitHub |
+| [`docs/prompts/README.md`](docs/es/prompts/README.md) | Índice maestro de los 8 prompts secuenciales |
 | [`scripts/README.md`](scripts/README.md) | Documentación de `init-project.sh` y `setup.sh` |
 
 ---
@@ -126,14 +147,14 @@ El flujo de trabajo sigue **7 fases secuenciales**. Cada fase produce un documen
 
 | # | Documento | Propósito | Prompt |
 |---|-----------|-----------|--------|
-| 1 | **PRD-SRD** | Qué se construye y para quién | [`01-PRD-SRD.md`](docs/prompts/01-PRD-SRD.md) |
-| 2 | **SRS** | Requisitos funcionales y no funcionales | [`02-SRS.md`](docs/prompts/02-SRS.md) |
-| 3 | **Propuesta Técnica** | Stack, arquitectura, licenciamiento | [`03-Propuesta-Tecnica.md`](docs/prompts/03-Propuesta-Tecnica.md) |
-| 4 | **SSD-TDD** | Diseño detallado: arquitectura, BD, API | [`04-SSD-TDD.md`](docs/prompts/04-SSD-TDD.md) |
-| 5 | **Mapeo NIST+OWASP** | Cumplimiento de seguridad | [`05-Mapeo-NIST-OWASP.md`](docs/prompts/05-Mapeo-NIST-OWASP.md) |
-| 6 | **Estrategia de Respaldos** | Respaldos y retención de logs | [`06-Estrategia-Respaldos.md`](docs/prompts/06-Estrategia-Respaldos.md) |
-| 7 | **Plan de Pruebas** | Estrategia de testing completa | [`07-Plan-Pruebas.md`](docs/prompts/07-Plan-Pruebas.md) |
-| 8 | **Registro Forense** | Ingeniería inversa de sistemas sin docs | [`08-Registro-Forense.md`](docs/prompts/08-Registro-Forense.md) |
+| 1 | **PRD-SRD** | Qué se construye y para quién | [`01-PRD-SRD.md`](docs/es/prompts/01-PRD-SRD.md) |
+| 2 | **SRS** | Requisitos funcionales y no funcionales | [`02-SRS.md`](docs/es/prompts/02-SRS.md) |
+| 3 | **Propuesta Técnica** | Stack, arquitectura, licenciamiento | [`03-Propuesta-Tecnica.md`](docs/es/prompts/03-Propuesta-Tecnica.md) |
+| 4 | **SSD-TDD** | Diseño detallado: arquitectura, BD, API | [`04-SSD-TDD.md`](docs/es/prompts/04-SSD-TDD.md) |
+| 5 | **Mapeo NIST+OWASP** | Cumplimiento de seguridad | [`05-Mapeo-NIST-OWASP.md`](docs/es/prompts/05-Mapeo-NIST-OWASP.md) |
+| 6 | **Estrategia de Respaldos** | Respaldos y retención de logs | [`06-Estrategia-Respaldos.md`](docs/es/prompts/06-Estrategia-Respaldos.md) |
+| 7 | **Plan de Pruebas** | Estrategia de testing completa | [`07-Plan-Pruebas.md`](docs/es/prompts/07-Plan-Pruebas.md) |
+| 8 | **Registro Forense** | Ingeniería inversa de sistemas sin docs | [`08-Registro-Forense.md`](docs/es/prompts/08-Registro-Forense.md) |
 
 ### Archivos de configuración
 
@@ -213,7 +234,7 @@ Este flujo está diseñado para funcionar con **modelos gratuitos vía web** y *
 
 **Presupuesto estimado:** $10-20 USD/mes con uso disciplinado. El 80-90% de las operaciones se hacen con DeepSeek V4 Flash, que es el modelo más económico de OpenRouter en 2026.
 
-📖 **Guía completa de modelos:** [`docs/MODELOS_IA.md`](docs/MODELOS_IA.md)
+📖 **Guía completa de modelos:** [`docs/MODELOS_IA.md`](docs/es/MODELOS_IA.md)
 
 ---
 
@@ -250,7 +271,7 @@ Las 10 categorías están cubiertas en el Plan de Pruebas y el Mapeo NIST+OWASP:
 9. Security Logging & Alerting Failures
 10. **Mishandling of Exceptional Conditions**
 
-📖 **Guía completa de seguridad:** [`docs/SEGURIDAD.md`](docs/SEGURIDAD.md)
+📖 **Guía completa de seguridad:** [`docs/SEGURIDAD.md`](docs/es/SEGURIDAD.md)
 
 ---
 
@@ -280,6 +301,7 @@ mi-proyecto/
 ├── tests/
 ├── scripts/
 ├── config/
+├── .project-language
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── GEMINI.md
@@ -298,6 +320,8 @@ mi-proyecto/
 ├── requirements.txt
 └── setup.sh
 ```
+
+**Nota:** Si creas el proyecto con `--language en`, los docs usarán nombres en inglés (`Technical_Proposal.md`, `NIST_OWASP_Mapping.md`, etc.).
 
 ---
 
@@ -330,7 +354,7 @@ mi-proyecto/
 | Gitleaks | Binario desde GitHub Releases |
 | git-cliff | Binario desde GitHub Releases |
 
-📖 **Guía detallada de instalación:** [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/HERRAMIENTAS_SEGURIDAD.md)
+📖 **Guía detallada de instalación:** [`docs/HERRAMIENTAS_SEGURIDAD.md`](docs/es/HERRAMIENTAS_SEGURIDAD.md)
 
 ---
 
@@ -405,8 +429,8 @@ Este proyecto está licenciado bajo la **MIT License**. Puedes usarlo, modificar
 Si tienes preguntas o encuentras problemas:
 
 - Abre un **Issue** en este repositorio.
-- Revisa la documentación en [`docs/`](docs/).
-- Consulta el [`docs/prompts/README.md`](docs/prompts/README.md) para dudas sobre los prompts.
+- Revisa la documentación en [`docs/es/`](docs/es/).
+- Consulta el [`docs/prompts/README.md`](docs/es/prompts/README.md) para dudas sobre los prompts.
 
 ---
 
