@@ -219,8 +219,10 @@ msg() {
     # Próximos pasos
     es:next_steps)          echo "Próximos pasos:" ;;
     en:next_steps)          echo "Next steps:" ;;
-    es:step1)               echo "  1. Editar 'AGENTS.md' con el nombre del proyecto." ;;
-    en:step1)               echo "  1. Edit 'AGENTS.md' with the project name." ;;
+    es:step1)               echo "  1. Poner el nombre del proyecto donde aparece el marcador (archivo:línea):" ;;
+    en:step1)               echo "  1. Set the project name where the placeholder appears (file:line):" ;;
+    es:step1_done)          echo "  1. Nombre del proyecto: ya configurado (nada que hacer)." ;;
+    en:step1_done)          echo "  1. Project name: already set (nothing to do)." ;;
     es:step2)               echo "  2. Instalar herramientas de seguridad (si no lo hiciste):" ;;
     en:step2)               echo "  2. Install security tools (if you haven't):" ;;
     es:step3)               echo "  3. Configurar secrets en GitHub (Settings → Secrets → Actions):" ;;
@@ -1036,7 +1038,18 @@ echo "╚═══════════════════════�
 echo ""
 echo "📋 $(msg next_steps)"
 echo ""
-echo "$(msg step1)"
+# Solo pide editar el nombre si los marcadores siguen sin reemplazar
+# (init-project.sh los reemplaza solo; al copiar la plantilla a mano quedan).
+PLACEHOLDER_HITS=$(grep -nE '\[(NOMBRE DEL PROYECTO|PROJECT NAME)\]|"name": "tu-proyecto"' \
+  AGENTS.md AGENTS.en.md README.md package.json 2>/dev/null || true)
+if [ -n "$PLACEHOLDER_HITS" ]; then
+  echo "$(msg step1)"
+  while IFS= read -r hit; do
+    echo "     $hit"
+  done <<< "$PLACEHOLDER_HITS"
+else
+  echo "$(msg step1_done)"
+fi
 echo ""
 echo "$(msg step2)"
 echo "     ./setup.sh --install-tools"
