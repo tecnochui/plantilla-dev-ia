@@ -12,6 +12,10 @@
 # Use bash instead of sh (dash does not support echo -e)
 SHELL := /bin/bash
 
+# Use the tools from the project's virtual environment (.venv) when it exists
+# Usa las herramientas del entorno virtual del proyecto (.venv) si existe
+export PATH := $(CURDIR)/.venv/bin:$(PATH)
+
 # Detect project language from .project-language
 PROJECT_LANG := $(shell cat .project-language 2>/dev/null | tr -d '[:space:]')
 ifeq ($(PROJECT_LANG),)

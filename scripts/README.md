@@ -282,7 +282,7 @@ Then:
 ### Usage
 
 ```bash
-./setup.sh [--force] [--dry-run] [--install-tools] [--check]
+./setup.sh [--force] [--dry-run] [--install-tools [--venv|--system]] [--check]
 ```
 
 | Option | Description |
@@ -290,7 +290,9 @@ Then:
 | `--check` | Only verifies the structure (does not modify anything) |
 | `--force` | Overwrites existing files (not used currently) |
 | `--dry-run` | Shows what it would do without creating or installing anything |
-| `--install-tools` | Installs security tools via `apt`/`pip`/binary |
+| `--install-tools` | Installs security tools. Asks where: project virtual environment (`.venv/`) or system-wide |
+| `--venv` | With `--install-tools`: installs in the project's `.venv/` (no sudo) |
+| `--system` | With `--install-tools`: installs system-wide (pipx + apt, uses sudo) |
 
 ### Examples
 
@@ -329,27 +331,19 @@ If a directory is missing, it creates it (except in `--check`). If a file is mis
 
 ### What it installs with `--install-tools`
 
-| Tool | Method | Requires sudo |
-|------|--------|---------------|
-| Semgrep | `pip3 install --user` | No |
-| detect-secrets | `pip3 install --user` | No |
-| Bandit | `pip3 install --user` | No |
-| pip-audit | `pip3 install --user` | No |
-| Ruff | `pip3 install --user` | No |
-| Mypy | `pip3 install --user` | No |
-| pytest + pytest-cov | `pip3 install --user` | No |
-| pre-commit | `pip3 install --user` | No |
-| Trivy | `apt` (Aqua Security repository) | Yes |
-| Gitleaks | Binary from GitHub Releases | Yes (to `/usr/local/bin`) |
-| git-cliff | Binary from GitHub Releases | Yes (to `/usr/local/bin`) |
+| Tool | Project venv (`--venv`, default) | System-wide (`--system`) |
+|------|----------------------------------|--------------------------|
+| Semgrep, detect-secrets, Bandit, pip-audit, Ruff, Mypy, pytest + pytest-cov, pre-commit, git-cliff | `pip install` inside `.venv/` | `pipx install` (one isolated environment per tool) |
+| Trivy | Binary from GitHub Releases into `.venv/bin/` | `apt` (Aqua Security repository), GitHub binary as fallback |
+| Gitleaks | Binary from GitHub Releases into `.venv/bin/` | Binary from GitHub Releases into `/usr/local/bin/` |
 
-**Note:** The script asks for confirmation before using `sudo`. If you say no, it skips the `apt`/binary installation but continues with the `pip` ones.
+**Note:** `--venv` does not need `sudo` (only to install `python3-venv` if your system lacks it). `--system` asks for confirmation before using `sudo`; if you say no, it installs nothing. Without an interactive terminal (CI, pipes) and without `--system`, it uses the venv. `make` and the git hooks pick up the tools in `.venv/bin` automatically.
 
 ### What it does additionally
 
 - **Installs project dependencies:**
   - If `package.json` exists → `npm install`
-  - If `requirements.txt` exists → `pip3 install --user -r requirements.txt`
+  - If `requirements.txt` exists → creates `.venv/` if needed and runs `pip install -r requirements.txt` inside it (in both modes; the system Python blocks global installs, PEP 668)
 - **Configures Husky:** runs `npx husky install` and gives permissions to the hooks.
 
 ### Differences between `init-project.sh` and `setup.sh`

@@ -282,7 +282,7 @@ Luego:
 ### Uso
 
 ```bash
-./setup.sh [--force] [--dry-run] [--install-tools] [--check]
+./setup.sh [--force] [--dry-run] [--install-tools [--venv|--system]] [--check]
 ```
 
 | Opción | Descripción |
@@ -290,7 +290,9 @@ Luego:
 | `--check` | Solo verifica la estructura (no modifica nada) |
 | `--force` | Sobrescribe archivos existentes (no usado actualmente) |
 | `--dry-run` | Muestra qué haría sin crear ni instalar nada |
-| `--install-tools` | Instala herramientas de seguridad vía `apt`/`pip`/binario |
+| `--install-tools` | Instala herramientas de seguridad. Pregunta dónde: entorno virtual del proyecto (`.venv/`) o todo el sistema |
+| `--venv` | Con `--install-tools`: instala en el `.venv/` del proyecto (sin sudo) |
+| `--system` | Con `--install-tools`: instala en todo el sistema (pipx + apt, usa sudo) |
 
 ### Ejemplos
 
@@ -329,27 +331,19 @@ Si falta un directorio, lo crea (salvo en `--check`). Si falta un archivo, lo re
 
 ### Qué instala con `--install-tools`
 
-| Herramienta | Vía | Requiere sudo |
-|-------------|-----|---------------|
-| Semgrep | `pip3 install --user` | No |
-| detect-secrets | `pip3 install --user` | No |
-| Bandit | `pip3 install --user` | No |
-| pip-audit | `pip3 install --user` | No |
-| Ruff | `pip3 install --user` | No |
-| Mypy | `pip3 install --user` | No |
-| pytest + pytest-cov | `pip3 install --user` | No |
-| pre-commit | `pip3 install --user` | No |
-| Trivy | `apt` (repositorio de Aqua Security) | Sí |
-| Gitleaks | Binario desde GitHub Releases | Sí (a `/usr/local/bin`) |
-| git-cliff | Binario desde GitHub Releases | Sí (a `/usr/local/bin`) |
+| Herramienta | Venv del proyecto (`--venv`, por defecto) | Todo el sistema (`--system`) |
+|-------------|-------------------------------------------|------------------------------|
+| Semgrep, detect-secrets, Bandit, pip-audit, Ruff, Mypy, pytest + pytest-cov, pre-commit, git-cliff | `pip install` dentro de `.venv/` | `pipx install` (un entorno aislado por herramienta) |
+| Trivy | Binario desde GitHub Releases a `.venv/bin/` | `apt` (repositorio de Aqua Security), binario de GitHub como respaldo |
+| Gitleaks | Binario desde GitHub Releases a `.venv/bin/` | Binario desde GitHub Releases a `/usr/local/bin/` |
 
-**Nota:** El script pide confirmación antes de usar `sudo`. Si dices que no, omite la instalación vía `apt`/binario pero continúa con las de `pip`.
+**Nota:** `--venv` no necesita `sudo` (solo para instalar `python3-venv` si tu sistema no lo trae). `--system` pide confirmación antes de usar `sudo`; si dices que no, no instala nada. Sin terminal interactiva (CI, pipes) y sin `--system`, usa el venv. `make` y los hooks de git encuentran solas las herramientas de `.venv/bin`.
 
 ### Qué hace además
 
 - **Instala dependencias del proyecto:**
   - Si existe `package.json` → `npm install`
-  - Si existe `requirements.txt` → `pip3 install --user -r requirements.txt`
+  - Si existe `requirements.txt` → crea `.venv/` si hace falta y ejecuta `pip install -r requirements.txt` dentro (en ambos modos; el Python del sistema bloquea instalaciones globales, PEP 668)
 - **Configura Husky:** ejecuta `npx husky install` y da permisos a los hooks.
 
 ### Diferencias entre `init-project.sh` y `setup.sh`

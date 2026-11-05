@@ -340,19 +340,15 @@ my-project/
 
 ### Security tools (installed by `./setup.sh --install-tools`)
 
-| Tool | Installation |
-|------|--------------|
-| Semgrep | `pip3 install --user semgrep` |
-| detect-secrets | `pip3 install --user detect-secrets` |
-| Bandit | `pip3 install --user bandit` |
-| pip-audit | `pip3 install --user pip-audit` |
-| Ruff | `pip3 install --user ruff` |
-| Mypy | `pip3 install --user mypy` |
-| pytest + pytest-cov | `pip3 install --user pytest pytest-cov` |
-| pre-commit | `pip3 install --user pre-commit` |
-| Trivy | `apt` from Aqua Security repository |
-| Gitleaks | Binary from GitHub Releases |
-| git-cliff | Binary from GitHub Releases |
+`./setup.sh --install-tools` asks where to install them: in the project's virtual environment (`.venv/`, recommended: isolated per project, no `sudo`) or system-wide. Skip the question with `--venv` or `--system`.
+
+| Tool | Project venv (`--venv`) | System-wide (`--system`) |
+|------|-------------------------|--------------------------|
+| Semgrep, detect-secrets, Bandit, pip-audit, Ruff, Mypy, pytest + pytest-cov, pre-commit, git-cliff | `pip install` inside `.venv/` | `pipx install` (one isolated environment per tool) |
+| Trivy | Binary from GitHub Releases into `.venv/bin/` | `apt` from the Aqua Security repository (GitHub binary as fallback) |
+| Gitleaks | Binary from GitHub Releases into `.venv/bin/` | Binary from GitHub Releases into `/usr/local/bin/` |
+
+> Ubuntu 24.04 and Linux Mint 22 block `pip install` outside a virtual environment (PEP 668), so plain `pip3 install --user` is not used.
 
 📖 **Detailed installation guide:** [`docs/en/SECURITY_TOOLS.md`](docs/en/SECURITY_TOOLS.md)
 

@@ -1,6 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Usa las herramientas del entorno virtual del proyecto (.venv) si existe
+VENV_BIN="$(git rev-parse --show-toplevel 2>/dev/null)/.venv/bin"
+if [ -d "$VENV_BIN" ]; then
+  PATH="$VENV_BIN:$PATH"
+  export PATH
+fi
+
 echo "🔍 Ejecutando validaciones pre-commit..."
 
 # ──────────────────────────────────────────────
